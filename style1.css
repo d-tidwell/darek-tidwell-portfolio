@@ -1,11 +1,26 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
 body {
     overflow: hidden; /* Hide scrollbars */
+    font-family: 'Press Start 2P', cursive;
+    font-size: 8px;
+    color: greenyellow;
   }
-  
+
+
+.navbar .navbar .navbar-brand {
+    color: greenyellow;
+}
+.navbar.navbar.collapse.navbar-nav.nav-item.nav-link{
+    color: greenyellow;
+
+}
 .navbar {
+    
     z-index: 1; /* integer */
     padding-bottom: 0%;
   }
+
 
 .webgl {
     padding-top: 0%;
