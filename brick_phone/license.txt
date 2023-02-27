@@ -1,0 +1,11 @@
+Model Information:
+* title:	Brick Phone
+* source:	https://sketchfab.com/3d-models/brick-phone-c1ca66a7fda345069fff390900689c22
+* author:	olmytro (https://sketchfab.com/olmytro)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Brick Phone" (https://sketchfab.com/3d-models/brick-phone-c1ca66a7fda345069fff390900689c22) by olmytro (https://sketchfab.com/olmytro) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
