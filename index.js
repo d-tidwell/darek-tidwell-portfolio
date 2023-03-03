@@ -11,6 +11,8 @@ const sizes = {
     height: window.innerHeight
 }
 // GLTF MODELS
+
+
 const loader = new GLTFLoader();
 loader.load( 'sony_trinitron_prl/scene.gltf', function ( gltf ) {
     let tvModel = gltf.scene;
@@ -42,6 +44,27 @@ loader2.load( 'brick_phone/scene.gltf', function ( gltf2 ) {
     console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded-phone' );
 
 }, undefined, function ( error ) {
+
+    console.error( error );
+
+} );
+
+const loader3 = new GLTFLoader();
+loader.load( 'book_stack.glb', function ( gltf ) {
+    let bookModel = gltf.scene;
+    bookModel.castShadow = true;
+    bookModel.scale.set(.2, .2, .2);
+    bookModel.position.z= -0.25;
+    bookModel.position.y= -0.12;
+    bookModel.position.x= -0.2;
+    bookModel.rotation.set(0,5.1,0)
+    scene.add( bookModel );
+
+}, function ( xhr ) {
+
+    console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded-book' );
+
+},undefined, function ( error ) {
 
     console.error( error );
 
@@ -90,15 +113,15 @@ const material = new THREE.MeshPhysicalMaterial({
 // Meshs
 //const mesh1 = new THREE.Mesh( box1, material );
 //scene.add( mesh1 );
-const mesh2 = new THREE.Mesh( box2, material );
-mesh2.name = "rear tester";
-scene.add( mesh2 );
+// const mesh2 = new THREE.Mesh( box2, material );
+// mesh2.name = "rear tester";
+// scene.add( mesh2 );
 //const mesh3 = new THREE.Mesh( box3, material );
 //scene.add( mesh3 );
 const mesh4 = new THREE.Mesh( box4, material );
 // needed for event handler
-mesh4.name = 'tester';
-scene.add( mesh4 );
+// mesh4.name = 'tester';
+// scene.add( mesh4 );
 
 // const meshPlane = new THREE.Mesh (plane, shadowMaterial);
 // meshPlane.position.y = -0.2;
@@ -158,7 +181,7 @@ function onClick(event) {
         infoMesh.name = "INFO-TV";
         scene.add(infoMesh);
     }
-    if(intersect[0].object.name == "PHONE_MAIN_LOW"){
+    if(intersect[0].object.name == "PHONE_MAIN_LOW" || intersect[0].object.name == "PHONEBUTTON"){
         //There is a mobile issue here needs to be resolved 
         let infoPane = new THREE.PlaneGeometry(0.3,0.5);
         infoPane.rotateY(- Math.PI / 2);
@@ -169,6 +192,19 @@ function onClick(event) {
         infoMesh.name = "INFO-TV";
         scene.add(infoMesh);
     }
+    if(intersect[0].object.name == "book_stack_1" || intersect[0].object.name == "book_stack_3" || intersect[0].object.name == "book_stack_5" ||
+        intersect[0].object.name == "book_stack_2" || intersect[0].object.name == "book_stack_4" || intersect[0].object.name == "book_stack_6" ||
+        intersect[0].object.name == "book_stack_7" || intersect[0].object.name == "book_stack_8"   ) {
+            //There is a mobile issue here needs to be resolved 
+        let infoPane = new THREE.PlaneGeometry(0.3,0.5);
+        infoPane.rotateY(0.48);
+        infoPane.translate(-0.27,0,-.4);
+        const infoMaterial = new THREE.MeshBasicMaterial({color: 0xffff00, side: THREE.DoubleSide});
+        const infoMesh = new THREE.Mesh(infoPane, infoMaterial);
+        //object catchable name
+        infoMesh.name = "INFO-TV";
+        scene.add(infoMesh);
+        }
     // to remove the object - need to make this a function
     if(intersect[0].object.name == "INFO-TV") {
         console.log("removed");
