@@ -158,6 +158,17 @@ function onClick(event) {
         infoMesh.name = "INFO-TV";
         scene.add(infoMesh);
     }
+    if(intersect[0].object.name == "PHONE_MAIN_LOW"){
+        //There is a mobile issue here needs to be resolved 
+        let infoPane = new THREE.PlaneGeometry(0.3,0.5);
+        infoPane.rotateY(- Math.PI / 2);
+        infoPane.translate(0.44,-0.01,0);
+        const infoMaterial = new THREE.MeshBasicMaterial({color: 0xffff00, side: THREE.DoubleSide});
+        const infoMesh = new THREE.Mesh(infoPane, infoMaterial);
+        //object catchable name
+        infoMesh.name = "INFO-TV";
+        scene.add(infoMesh);
+    }
     // to remove the object - need to make this a function
     if(intersect[0].object.name == "INFO-TV") {
         console.log("removed");
