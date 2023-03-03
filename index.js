@@ -1,27 +1,30 @@
 import * as THREE from 'https://cdn.skypack.dev/three@0.128.0/build/three.module.js';
 import { OrbitControls } from 'https://cdn.skypack.dev/three@0.128.0/examples/jsm/controls/OrbitControls.js';
 import { GLTFLoader } from "https://cdn.skypack.dev/three@0.128.0/examples/jsm/loaders/GLTFLoader.js";
-import MouseMeshInteraction from './mmi.js';
 
 
-let camera, scene, renderer;
+let camera, scene, renderer, raycaster, mouse;
 
     
 const sizes = {
     width: window.innerWidth,
     height: window.innerHeight
 }
+// GLTF MODELS
 const loader = new GLTFLoader();
 loader.load( 'sony_trinitron_prl/scene.gltf', function ( gltf ) {
     let tvModel = gltf.scene;
     tvModel.castShadow = true;
     tvModel.scale.set(0.001, 0.001, 0.001);
-   
-    tvModel.position.z= 0.45;
+    tvModel.position.z= 0.35;
     tvModel.rotation.set(0,3.55,0)
     scene.add( tvModel );
 
-}, undefined, function ( error ) {
+}, function ( xhr ) {
+
+    console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded-tv' );
+
+},undefined, function ( error ) {
 
     console.error( error );
 
@@ -31,9 +34,12 @@ loader2.load( 'brick_phone/scene.gltf', function ( gltf2 ) {
     let phoneModel = gltf2.scene;
     phoneModel.scale.set(0.025, 0.025, 0.025);
     phoneModel.position.x= 0.4;
-  
     phoneModel.rotation.set(0,-4.7,0)
     scene.add( phoneModel );
+
+}, function ( xhr ) {
+
+    console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded-phone' );
 
 }, undefined, function ( error ) {
 
@@ -81,13 +87,6 @@ const material = new THREE.MeshPhysicalMaterial({
 });
 
 
-const shadowMaterial = new THREE.ShadowMaterial({
-    opacity : 0.02,
-    transparent : false,
-    fog : false
-});
-
-
 // Meshs
 //const mesh1 = new THREE.Mesh( box1, material );
 //scene.add( mesh1 );
@@ -122,12 +121,53 @@ renderer.antialias = true;
 renderer.shadowMap.enabled = true
 
 document.body.appendChild( renderer.domElement );
-    
-    const controls = new OrbitControls( camera, renderer.domElement );
-    controls.minDistance = 1;
-    controls.maxDistance = 2;
 
+// Controls
+const controls = new OrbitControls( camera, renderer.domElement );
+controls.minDistance = 1;
+controls.maxDistance = 2;
 
+//click control needs mouse x & y set first with normalized coordinate to set the ray
+raycaster = new THREE.Raycaster();
+mouse = new THREE.Vector2();
+function onMouseMove( event ) {
+  // calculates mouse position in normalized device coordinate -1 to  +1 for both given the canvas size
+  let canvasBounds = renderer.getContext().canvas.getBoundingClientRect();
+  mouse.x = ( ( event.clientX - canvasBounds.left ) / ( canvasBounds.right - canvasBounds.left ) ) * 2 - 1;
+  mouse.y = - ( ( event.clientY - canvasBounds.top ) / ( canvasBounds.bottom - canvasBounds.top) ) * 2 + 1;
+  
+}
+function onClick(event) {
+  raycaster.setFromCamera(mouse, camera);
+  raycaster.setFromCamera(mouse, camera);
+  let intersect;
+  intersect = raycaster.intersectObjects(scene.children, true);
+  if (intersect.length > 0 ) {
+    console.log(intersect)
+    console.log(mouse.x, mouse.y);
+    console.log(intersect[0].object.name);
+    if(intersect[0].object.name == "TVSCREEN") {
+      let infoPane = new THREE.PlaneGeometry(.5,.5);
+      //infoPane.rotateY(- Math.PI / 2);
+      infoPane.translate(0,-0.01,.51);
+      const infoMaterial = new THREE.MeshBasicMaterial({color: 0xffff00, side: THREE.DoubleSide});
+      const infoMesh = new THREE.Mesh(infoPane, infoMaterial);
+      //object catchable name
+      infoMesh.name = "INFO-TV";
+      scene.add(infoMesh);
+    }
+    // to remove the object - need to make this a function
+    if(intersect[0].object.name == "INFO-TV") {
+      console.log("removed");
+      let selectedObject = scene.getObjectByName("INFO-TV")
+      scene.remove(selectedObject);
+    }
+
+  }
+}
+window.addEventListener('mousemove', onMouseMove, false);
+window.addEventListener('click', onClick);
+window.addEventListener("touchend", onClick);
 
 
 
@@ -138,29 +178,14 @@ camera.aspect = window.innerWidth / window.innerHeight; // Update aspect ratio
 camera.updateProjectionMatrix(); // Apply changes
 });
 
-function resizeRendererToDisplaySize(renderer) {
-    const canvas = renderer.domElement;
-    const width = canvas.clientWidth;
-    const height = canvas.clientHeight;
-    const needResize = canvas.width !== width || canvas.height !== height;
-    if (needResize) {
-        renderer.setSize(width, height, false);
-    }
-    return needResize;
-}
+
+
 
 
 animate();
 function animate() {
 
-    requestAnimationFrame( animate );
-    if (resizeRendererToDisplaySize(renderer)) {
-        const canvas = renderer.domElement;
-        camera.aspect = canvas.clientWidth / canvas.clientHeight;
-        camera.updateProjectionMatrix();
-      }
-  
-      renderer.setPixelRatio(window.devicePixelRatio);
+    
   
     //   // Update trackball controls
       controls.update();
@@ -168,8 +193,9 @@ function animate() {
     //   // Constantly rotate box
     //   scene.rotation.z -= 0.002;
     //   scene.rotation.x -= 0.004;
-    //   scene.rotation.y -= 0.006;
+    //  scene.rotation.y -= 0.006;
     renderer.render( scene, camera );
+    requestAnimationFrame( animate );
 
 }
 

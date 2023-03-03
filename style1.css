@@ -2,9 +2,10 @@
 
 body {
     overflow: hidden; /* Hide scrollbars */
-    font-family: 'Press Start 2P', cursive;
-    font-size: 8px;
-    color: greenyellow;
+    //font-family: 'Press Start 2P', cursive;
+    //font-size: 8px;
+    //color: greenyellow;
+    background-color: black;
   }
 
 
