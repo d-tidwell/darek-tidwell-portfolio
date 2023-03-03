@@ -1,7 +1,10 @@
 import * as THREE from 'https://cdn.skypack.dev/three@0.128.0/build/three.module.js';
 import { OrbitControls } from 'https://cdn.skypack.dev/three@0.128.0/examples/jsm/controls/OrbitControls.js';
 import { GLTFLoader } from "https://cdn.skypack.dev/three@0.128.0/examples/jsm/loaders/GLTFLoader.js";
-
+import { RenderPass } from "https://cdn.skypack.dev/three@0.128.0/examples/jsm/postprocessing/RenderPass.js";
+import { EffectComposer } from '//cdn.skypack.dev/three@0.128.0/examples/jsm/postprocessing/EffectComposer.js';
+import { ShaderPass } from '//cdn.skypack.dev/three@0.128.0/examples/jsm/postprocessing/ShaderPass.js';
+import { RGBShiftShader } from '//cdn.skypack.dev/three@0.128.0/examples/jsm/shaders/RGBShiftShader.js';
 
 let camera, scene, renderer, raycaster, mouse, canvasBounds;
 
@@ -10,10 +13,20 @@ const sizes = {
     width: window.innerWidth,
     height: window.innerHeight
 }
+// Loading Screen
+const loadingManager = new THREE.LoadingManager();
+const progressBar = document.getElementById("progress-bar");
+loadingManager.onProgress=function(url, loaded, total) {
+    progressBar.value = ( loaded / total) * 100;
+}
+const progressBarContainer = document.querySelector('.progress-bar-container');
+loadingManager.onLoad = function() {
+    progressBarContainer.style.display = 'none';
+}
 // GLTF MODELS
 
 
-const loader = new GLTFLoader();
+const loader = new GLTFLoader(loadingManager);
 loader.load( 'sony_trinitron_prl/scene.gltf', function ( gltf ) {
     let tvModel = gltf.scene;
     tvModel.castShadow = true;
@@ -31,7 +44,7 @@ loader.load( 'sony_trinitron_prl/scene.gltf', function ( gltf ) {
     console.error( error );
 
 } );
-const loader2 = new GLTFLoader();
+const loader2 = new GLTFLoader(loadingManager);
 loader2.load( 'brick_phone/scene.gltf', function ( gltf2 ) {
     let phoneModel = gltf2.scene;
     phoneModel.scale.set(0.025, 0.025, 0.025);
@@ -49,7 +62,7 @@ loader2.load( 'brick_phone/scene.gltf', function ( gltf2 ) {
 
 } );
 
-const loader3 = new GLTFLoader();
+const loader3 = new GLTFLoader(loadingManager);
 loader.load( 'book_stack.glb', function ( gltf ) {
     let bookModel = gltf.scene;
     bookModel.castShadow = true;
@@ -69,6 +82,8 @@ loader.load( 'book_stack.glb', function ( gltf ) {
     console.error( error );
 
 } );
+
+
 
 // Camera
 camera = new THREE.PerspectiveCamera( 70, sizes.width / sizes.height, 0.01, 10 );
@@ -171,13 +186,13 @@ function onClick(event) {
         console.log(mouse.x, mouse.y);
         console.log(intersect[0].object.name);
     if(intersect[0].object.name == "TVSCREEN") {
-        //There is a mobile issue here needs to be resolved
+        //There is a mobile size issue here needs to be resolved
         const textureLoader = new THREE.TextureLoader().load('catpicture.jpg');
         let infoPane = new THREE.PlaneGeometry(0.5,0.5);
         //infoPane.rotateY(- Math.PI / 2);
         infoPane.translate(0,-0.01,.51);
         const infoMaterial = new THREE.MeshBasicMaterial({color: 0xffff00, side: THREE.DoubleSide});
-        const Phongmaterial = new THREE.MeshBasic-Material({ map: textureLoader });
+        const Phongmaterial = new THREE.MeshBasicMaterial({ map: textureLoader });
         const infoMesh = new THREE.Mesh(infoPane, Phongmaterial);
         //object catchable name
         infoMesh.name = "INFO-TV";
@@ -230,8 +245,15 @@ camera.updateProjectionMatrix(); // Apply changes
 });
 
 
+const effectComposer = new EffectComposer(renderer);
+effectComposer.setSize(sizes.width, sizes.height);
+effectComposer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+const renderPass = new RenderPass(scene, camera);
+effectComposer.addPass(renderPass);
+const rgbShiftPass = new ShaderPass(RGBShiftShader);
+rgbShiftPass.uniforms['amount'].value = 0.0015;
 
-
+effectComposer.addPass(rgbShiftPass);
 
 animate();
 function animate() {
@@ -245,7 +267,8 @@ function animate() {
     // scene.rotation.z -= 0.001;
     // scene.rotation.x -= 0.004;
     // scene.rotation.y -= 2;
-    renderer.render( scene, camera );
+    //renderer.render( scene, camera );
+    effectComposer.render();
     requestAnimationFrame( animate );
 
 }
