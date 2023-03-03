@@ -344,7 +344,7 @@
     },
     {
       "mesh": 0,
-      "name": "1"
+      "name": "TVBODY"
     },
     {
       "children": [
@@ -354,7 +354,7 @@
     },
     {
       "mesh": 1,
-      "name": "0"
+      "name": "TVSCREEN"
     }
   ],
   "samplers": [

@@ -15,10 +15,13 @@ body {
     color: greenyellow;
 
 }
+
+
 .navbar {
     
     z-index: 1; /* integer */
     padding-bottom: 0%;
+    
   }
 
 
