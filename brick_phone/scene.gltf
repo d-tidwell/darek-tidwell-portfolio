@@ -349,7 +349,7 @@
   ],
   "meshes": [
     {
-      "name": "mainM_low_TT_checker_4096x4096_UV_GRID_0",
+      "name": "PHONE MAIN",
       "primitives": [
         {
           "attributes": {
@@ -383,7 +383,7 @@
       ]
     },
     {
-      "name": "buttonM_low_TT_checker_4096x4096_UV_GRID_0",
+      "name": "PHONEBUTTON",
       "primitives": [
         {
           "attributes": {
@@ -483,7 +483,7 @@
     },
     {
       "mesh": 0,
-      "name": "mainM_low_TT_checker_4096x4096_UV_GRID_0"
+      "name": "PHONE_MAIN_LOW"
     },
     {
       "children": [
@@ -539,7 +539,7 @@
     },
     {
       "mesh": 2,
-      "name": "buttonM_low_TT_checker_4096x4096_UV_GRID_0"
+      "name": "PHONEBUTTON"
     }
   ],
   "samplers": [

@@ -3,7 +3,7 @@ import { OrbitControls } from 'https://cdn.skypack.dev/three@0.128.0/examples/js
 import { GLTFLoader } from "https://cdn.skypack.dev/three@0.128.0/examples/jsm/loaders/GLTFLoader.js";
 
 
-let camera, scene, renderer, raycaster, mouse;
+let camera, scene, renderer, raycaster, mouse, canvasBounds;
 
     
 const sizes = {
@@ -91,6 +91,7 @@ const material = new THREE.MeshPhysicalMaterial({
 //const mesh1 = new THREE.Mesh( box1, material );
 //scene.add( mesh1 );
 const mesh2 = new THREE.Mesh( box2, material );
+mesh2.name = "rear tester";
 scene.add( mesh2 );
 //const mesh3 = new THREE.Mesh( box3, material );
 //scene.add( mesh3 );
@@ -132,35 +133,36 @@ raycaster = new THREE.Raycaster();
 mouse = new THREE.Vector2();
 function onMouseMove( event ) {
   // calculates mouse position in normalized device coordinate -1 to  +1 for both given the canvas size
-  let canvasBounds = renderer.getContext().canvas.getBoundingClientRect();
+  canvasBounds = renderer.getContext().canvas.getBoundingClientRect();
   mouse.x = ( ( event.clientX - canvasBounds.left ) / ( canvasBounds.right - canvasBounds.left ) ) * 2 - 1;
   mouse.y = - ( ( event.clientY - canvasBounds.top ) / ( canvasBounds.bottom - canvasBounds.top) ) * 2 + 1;
   
 }
 function onClick(event) {
-  raycaster.setFromCamera(mouse, camera);
-  raycaster.setFromCamera(mouse, camera);
-  let intersect;
-  intersect = raycaster.intersectObjects(scene.children, true);
-  if (intersect.length > 0 ) {
-    console.log(intersect)
-    console.log(mouse.x, mouse.y);
-    console.log(intersect[0].object.name);
+
+    raycaster.setFromCamera(mouse, camera);
+    let intersect;
+    intersect = raycaster.intersectObjects(scene.children, true);
+    if (intersect.length > 0 ) {
+        console.log(intersect)
+        console.log(mouse.x, mouse.y);
+        console.log(intersect[0].object.name);
     if(intersect[0].object.name == "TVSCREEN") {
-      let infoPane = new THREE.PlaneGeometry(.5,.5);
-      //infoPane.rotateY(- Math.PI / 2);
-      infoPane.translate(0,-0.01,.51);
-      const infoMaterial = new THREE.MeshBasicMaterial({color: 0xffff00, side: THREE.DoubleSide});
-      const infoMesh = new THREE.Mesh(infoPane, infoMaterial);
-      //object catchable name
-      infoMesh.name = "INFO-TV";
-      scene.add(infoMesh);
+        //There is a mobile issue here needs to be resolved 
+        let infoPane = new THREE.PlaneGeometry(0.5,0.5);
+        //infoPane.rotateY(- Math.PI / 2);
+        infoPane.translate(0,-0.01,.51);
+        const infoMaterial = new THREE.MeshBasicMaterial({color: 0xffff00, side: THREE.DoubleSide});
+        const infoMesh = new THREE.Mesh(infoPane, infoMaterial);
+        //object catchable name
+        infoMesh.name = "INFO-TV";
+        scene.add(infoMesh);
     }
     // to remove the object - need to make this a function
     if(intersect[0].object.name == "INFO-TV") {
-      console.log("removed");
-      let selectedObject = scene.getObjectByName("INFO-TV")
-      scene.remove(selectedObject);
+        console.log("removed");
+        let selectedObject = scene.getObjectByName("INFO-TV")
+        scene.remove(selectedObject);
     }
 
   }
@@ -191,9 +193,9 @@ function animate() {
       controls.update();
   
     //   // Constantly rotate box
-    //   scene.rotation.z -= 0.002;
-    //   scene.rotation.x -= 0.004;
-    //  scene.rotation.y -= 0.006;
+    // scene.rotation.z -= 0.001;
+    // scene.rotation.x -= 0.004;
+    // scene.rotation.y -= 2;
     renderer.render( scene, camera );
     requestAnimationFrame( animate );
 
