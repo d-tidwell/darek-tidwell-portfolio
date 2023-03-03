@@ -209,9 +209,8 @@ function onClick(event) {
         infoMesh.name = "INFO-TV";
         scene.add(infoMesh);
     }
-    if(intersect[0].object.name == "book_stack_1" || intersect[0].object.name == "book_stack_3" || intersect[0].object.name == "book_stack_5" ||
-        intersect[0].object.name == "book_stack_2" || intersect[0].object.name == "book_stack_4" || intersect[0].object.name == "book_stack_6" ||
-        intersect[0].object.name == "book_stack_7" || intersect[0].object.name == "book_stack_8"   ) {
+    if(intersect[0].object.name == "book_stack_1" || intersect[0].object.name == "book_stack_3" ||
+        intersect[0].object.name == "book_stack_2" || intersect[0].object.name == "book_stack_4" || intersect[0].object.name == "book_stack_6" ) {
             //There is a mobile issue here needs to be resolved 
         let infoPane = new THREE.PlaneGeometry(0.3,0.5);
         infoPane.rotateY(0.48);
