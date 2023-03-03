@@ -171,12 +171,14 @@ function onClick(event) {
         console.log(mouse.x, mouse.y);
         console.log(intersect[0].object.name);
     if(intersect[0].object.name == "TVSCREEN") {
-        //There is a mobile issue here needs to be resolved 
+        //There is a mobile issue here needs to be resolved
+        const textureLoader = new THREE.TextureLoader().load('catpicture.jpg');
         let infoPane = new THREE.PlaneGeometry(0.5,0.5);
         //infoPane.rotateY(- Math.PI / 2);
         infoPane.translate(0,-0.01,.51);
         const infoMaterial = new THREE.MeshBasicMaterial({color: 0xffff00, side: THREE.DoubleSide});
-        const infoMesh = new THREE.Mesh(infoPane, infoMaterial);
+        const Phongmaterial = new THREE.MeshBasic-Material({ map: textureLoader });
+        const infoMesh = new THREE.Mesh(infoPane, Phongmaterial);
         //object catchable name
         infoMesh.name = "INFO-TV";
         scene.add(infoMesh);
