@@ -1,14 +1,10 @@
 import * as THREE from 'https://cdn.skypack.dev/three@0.128.0/build/three.module.js';
 import { OrbitControls } from 'https://cdn.skypack.dev/three@0.128.0/examples/jsm/controls/OrbitControls.js';
 import { GLTFLoader } from "https://cdn.skypack.dev/three@0.128.0/examples/jsm/loaders/GLTFLoader.js";
-import { RenderPass } from "https://cdn.skypack.dev/three@0.128.0/examples/jsm/postprocessing/RenderPass.js";
-import { EffectComposer } from '//cdn.skypack.dev/three@0.128.0/examples/jsm/postprocessing/EffectComposer.js';
-import { ShaderPass } from '//cdn.skypack.dev/three@0.128.0/examples/jsm/postprocessing/ShaderPass.js';
-import { RGBShiftShader } from '//cdn.skypack.dev/three@0.128.0/examples/jsm/shaders/RGBShiftShader.js';
 
-let camera, scene, renderer, raycaster, mouse, canvasBounds;
+let camera, scene, renderer, raycaster, mouse, canvasBounds, blurred;
 
-    
+blurred = true;
 const sizes = {
     width: window.innerWidth,
     height: window.innerHeight
@@ -24,14 +20,13 @@ loadingManager.onLoad = function() {
     progressBarContainer.style.display = 'none';
 }
 // GLTF MODELS
-
-
 const loader = new GLTFLoader(loadingManager);
 loader.load( 'sony_trinitron_prl/scene.gltf', function ( gltf ) {
     let tvModel = gltf.scene;
     tvModel.castShadow = true;
     tvModel.scale.set(0.001, 0.001, 0.001);
-    tvModel.position.z= 0.35;
+    tvModel.position.z= 0.6;
+    tvModel.position.y=0.25;
     tvModel.rotation.set(0,3.55,0)
     scene.add( tvModel );
 
@@ -48,7 +43,8 @@ const loader2 = new GLTFLoader(loadingManager);
 loader2.load( 'brick_phone/scene.gltf', function ( gltf2 ) {
     let phoneModel = gltf2.scene;
     phoneModel.scale.set(0.025, 0.025, 0.025);
-    phoneModel.position.x= 0.4;
+    phoneModel.position.x= 0.65;
+    phoneModel.position.y=0.25;
     phoneModel.rotation.set(0,-4.7,0)
     scene.add( phoneModel );
 
@@ -67,8 +63,8 @@ loader.load( 'book_stack.glb', function ( gltf ) {
     let bookModel = gltf.scene;
     bookModel.castShadow = true;
     bookModel.scale.set(.2, .2, .2);
-    bookModel.position.z= -0.25;
-    bookModel.position.y= -0.12;
+    bookModel.position.z= -0.5;
+    bookModel.position.y= 0.4-0.28;
     bookModel.position.x= -0.2;
     bookModel.rotation.set(0,5.1,0)
     scene.add( bookModel );
@@ -87,10 +83,10 @@ loader.load( 'book_stack.glb', function ( gltf ) {
 
 // Camera
 camera = new THREE.PerspectiveCamera( 70, sizes.width / sizes.height, 0.01, 10 );
-camera.position.z = 1;
+camera.position.z = 1.5;
 
 scene = new THREE.Scene();
-scene.fog = new THREE.Fog( 0x121111, 0.00025, 1 );
+// scene.fog = new THREE.Fog( 0x121111, 0.00025, .2 );
 scene.add(camera);
 
 // Geometry 
@@ -124,7 +120,27 @@ const material = new THREE.MeshPhysicalMaterial({
 
 });
 
-
+// Floor
+//video texture - see html video in index.html none display property
+//Get your video element
+const video = document.getElementById("video");
+video.onloadeddata = function () {
+    video.play();
+};
+//Create your video texture:
+const videoTexture = new THREE.VideoTexture(video);
+videoTexture.needsUpdate = true;
+const videoMaterial = new THREE.MeshBasicMaterial({
+    map: videoTexture,
+    side: THREE.DoubleSide,
+    toneMapped: false,
+    
+});
+const circle = new THREE.CircleGeometry(3, 64);
+circle.rotateX( - Math.PI / 2 );
+circle.rotateY(-Math.PI / 2);
+const circleMat = new THREE.Mesh(circle, videoMaterial);
+scene.add(circleMat);
 // Meshs
 //const mesh1 = new THREE.Mesh( box1, material );
 //scene.add( mesh1 );
@@ -144,18 +160,32 @@ const mesh4 = new THREE.Mesh( box4, material );
 // meshPlane.transparent = true;
 // scene.add(meshPlane)
 
+
 // Lights
-const light = new THREE.HemisphereLight( 0xffffbb, 0x080820, 8 );
+let spotLight = new THREE.SpotLight( 0x7b7b7b, 1 );
+                spotLight.angle = 1;
+				spotLight.position.set( 0.5, .8, 2 );
+				spotLight.position.multiplyScalar( 70 );
+                spotLight.pnumbra = 1;
+                spotLight.focus = 1;
+				scene.add( spotLight );
+let spotLight2 = new THREE.SpotLight( 0x7b7b7b, 3 );
+                scene.add( spotLight2 );
+                spotLight2.angle = .5;
+                spotLight2.position.y = 2;
+                spotLight2.position.x = -3;
+                spotLight2.position.z = -8;
+                const spotLightHelper = new THREE.SpotLightHelper( spotLight2 );
+                scene.add( spotLightHelper );
+const light = new THREE.AmbientLight( 0x8affa7, 0.7 ); // soft white light
 scene.add( light );
-
-
 
 // Renderer
 
-
 renderer = new THREE.WebGLRenderer( {antialias: true } );
 renderer.setSize( window.innerWidth, window.innerHeight );
-renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+//renderer.outputEncoding = THREE.sRGBEncoding;
 renderer.antialias = true;
 renderer.shadowMap.enabled = true
 
@@ -165,6 +195,9 @@ document.body.appendChild( renderer.domElement );
 const controls = new OrbitControls( camera, renderer.domElement );
 controls.minDistance = 1;
 controls.maxDistance = 2;
+controls.screenSpacePanning = false;
+controls.maxPolarAngle = Math.PI / 2;
+controls.target.set(0, 0.25, 0);
 
 //click control needs mouse x & y set first with normalized coordinate to set the ray
 raycaster = new THREE.Raycaster();
@@ -197,8 +230,9 @@ function onClick(event) {
         //object catchable name
         infoMesh.name = "INFO-TV";
         scene.add(infoMesh);
+        blurred = false;
     }
-    if(intersect[0].object.name == "PHONE_MAIN_LOW" || intersect[0].object.name == "PHONEBUTTON"){
+    if(intersect[0].object.name == "PHONEBUTTON"){
         //There is a mobile issue here needs to be resolved 
         let infoPane = new THREE.PlaneGeometry(0.3,0.5);
         infoPane.rotateY(- Math.PI / 2);
@@ -208,6 +242,7 @@ function onClick(event) {
         //object catchable name
         infoMesh.name = "INFO-TV";
         scene.add(infoMesh);
+        blurred = false;
     }
     if(intersect[0].object.name == "book_stack_1" || intersect[0].object.name == "book_stack_3" ||
         intersect[0].object.name == "book_stack_2" || intersect[0].object.name == "book_stack_4" || intersect[0].object.name == "book_stack_6" ) {
@@ -220,12 +255,14 @@ function onClick(event) {
         //object catchable name
         infoMesh.name = "INFO-TV";
         scene.add(infoMesh);
+        blurred = false;
         }
     // to remove the object - need to make this a function
     if(intersect[0].object.name == "INFO-TV") {
         console.log("removed");
         let selectedObject = scene.getObjectByName("INFO-TV")
         scene.remove(selectedObject);
+        blurred = true;
     }
 
   }
@@ -233,7 +270,6 @@ function onClick(event) {
 window.addEventListener('mousemove', onMouseMove, false);
 window.addEventListener('click', onClick);
 window.addEventListener("touchend", onClick);
-
 
 
 // window resize
@@ -244,30 +280,18 @@ camera.updateProjectionMatrix(); // Apply changes
 });
 
 
-const effectComposer = new EffectComposer(renderer);
-effectComposer.setSize(sizes.width, sizes.height);
-effectComposer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-const renderPass = new RenderPass(scene, camera);
-effectComposer.addPass(renderPass);
-const rgbShiftPass = new ShaderPass(RGBShiftShader);
-rgbShiftPass.uniforms['amount'].value = 0.0015;
-
-effectComposer.addPass(rgbShiftPass);
-
 animate();
 function animate() {
 
-    
-  
-    //   // Update trackball controls
-      controls.update();
-  
-    //   // Constantly rotate box
-    // scene.rotation.z -= 0.001;
-    // scene.rotation.x -= 0.004;
-    // scene.rotation.y -= 2;
-    //renderer.render( scene, camera );
-    effectComposer.render();
+    // Update trackball controls
+    controls.update();
+    // const time = performance.now() / 3000;
+
+    // spotLight2.position.x = Math.cos( time ) * 25;
+    // spotLight2.position.z = Math.sin( time ) * 25;
+    // console.log(spotLight2.position)
+    circle.rotateY(0.0003)
+    renderer.render( scene, camera );
     requestAnimationFrame( animate );
 
 }
