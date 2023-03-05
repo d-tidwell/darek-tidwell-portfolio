@@ -60,7 +60,9 @@ label {
     background:transparent;
     
   }
-
+  #video { 
+    display: none; 
+  }
 
 .webgl {
     padding-top: 0%;

@@ -77,6 +77,25 @@ loader.load( 'book_stack.glb', function ( gltf ) {
     console.error( error );
 
 } );
+const loader4 = new GLTFLoader(loadingManager);
+loader4.load( 'ibm_model_m_keyboard/working.glb', function ( gltf4 ) {
+    let kBModel = gltf4.scene;
+    kBModel.scale.set(1, 1, 1);
+    kBModel.position.x= 0.058;
+    kBModel.position.y=0.11;
+    kBModel.position.z=0.8;
+    kBModel.rotation.set(0,1.9,0)
+    scene.add( kBModel );
+
+}, function ( xhr ) {
+
+    console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded-phone' );
+
+}, undefined, function ( error ) {
+
+    console.error( error );
+
+} );
 
 
 
@@ -196,33 +215,43 @@ controls.screenSpacePanning = false;
 controls.maxPolarAngle = Math.PI / 2;
 controls.target.set(0, 0.25, 0);
 
+
+
 //click control needs mouse x & y set first with normalized coordinate to set the ray
+
 raycaster = new THREE.Raycaster();
+// raycaster.near =0;
+raycaster.far = 1.6;
+
 mouse = new THREE.Vector2();
 function onMouseMove( event ) {
   // calculates mouse position in normalized device coordinate -1 to  +1 for both given the canvas size
   canvasBounds = renderer.getContext().canvas.getBoundingClientRect();
   mouse.x = ( ( event.clientX - canvasBounds.left ) / ( canvasBounds.right - canvasBounds.left ) ) * 2 - 1;
   mouse.y = - ( ( event.clientY - canvasBounds.top ) / ( canvasBounds.bottom - canvasBounds.top) ) * 2 + 1;
+  camera.updateProjectionMatrix();
+  controls.update();
   
 }
 function onClick(event) {
 
     raycaster.setFromCamera(mouse, camera);
+
     let intersect;
     intersect = raycaster.intersectObjects(scene.children, true);
-
+    console.log(intersect)
+    console.log(mouse.x, mouse.y);
+    
     if (intersect.length > 0 ) {
-        console.log(intersect)
-        console.log(mouse.x, mouse.y);
         console.log(intersect[0].object.name);
+        
         // to remove the object - need to make this a function
         if(intersect[0].object.name == "INFO-TV" || intersect[0].object.name == "INFO-TRANS") {
             console.log("removed");
             let selectedObject = scene.getObjectByName("INFO-TV");
             let selectedBackground = scene.getObjectByName("INFO-TRANS");
-            scene.remove(selectedObject);
             scene.remove(selectedBackground);
+            scene.remove(selectedObject);
             return;
             
         }
@@ -232,7 +261,7 @@ function onClick(event) {
             const textureLoader = new THREE.TextureLoader().load('info-tv-projects.png');
             let infoPane = new THREE.PlaneGeometry(0.5,0.5);
             //infoPane.rotateY(- Math.PI / 2);
-            infoPane.translate(0,0.3,.8);
+            infoPane.translate(0,0.3,0.95);
             const infoMaterial = new THREE.MeshBasicMaterial({map: textureLoader2, side: THREE.DoubleSide, transparent: true, opacity: 0.72});
             const Phongmaterial = new THREE.MeshBasicMaterial({ map: textureLoader, side: THREE.DoubleSide, transparent: true, opacity:1 });
             const infoMeshBackground = new THREE.Mesh(infoPane, infoMaterial)
@@ -245,7 +274,7 @@ function onClick(event) {
             scene.add(infoMesh);
             
         }
-        if(intersect[0].object.name == "PHONEBUTTON"){
+        if(intersect[0].object.name == "PHONEBUTTON" || intersect[0].object.name == "PHONE_MAIN_LOW"){
             //There is a mobile issue here needs to be resolved 
             let infoPane = new THREE.PlaneGeometry(0.3,0.5);
             infoPane.rotateY(- Math.PI / 2);
@@ -276,7 +305,7 @@ function onClick(event) {
 }
 window.addEventListener('mousemove', onMouseMove, false);
 window.addEventListener('click', onClick);
-window.addEventListener("touchend", onClick);
+window.addEventListener("touchstart", onClick, false);
 
 
 // window resize
@@ -297,6 +326,7 @@ function animate() {
     // spotLight2.position.x = Math.cos( time ) * 25;
     // spotLight2.position.z = Math.sin( time ) * 25;
     // console.log(spotLight2.position)
+    camera.updateProjectionMatrix();
     circle.rotateY(0.0003)
     renderer.render( scene, camera );
     requestAnimationFrame( animate );
