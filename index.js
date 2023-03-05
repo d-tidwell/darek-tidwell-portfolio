@@ -2,9 +2,8 @@ import * as THREE from 'https://cdn.skypack.dev/three@0.128.0/build/three.module
 import { OrbitControls } from 'https://cdn.skypack.dev/three@0.128.0/examples/jsm/controls/OrbitControls.js';
 import { GLTFLoader } from "https://cdn.skypack.dev/three@0.128.0/examples/jsm/loaders/GLTFLoader.js";
 
-let camera, scene, renderer, raycaster, mouse, canvasBounds, blurred;
+let camera, scene, renderer, raycaster, mouse, canvasBounds, textures;
 
-blurred = true;
 const sizes = {
     width: window.innerWidth,
     height: window.innerHeight
@@ -160,9 +159,32 @@ const mesh4 = new THREE.Mesh( box4, material );
 // meshPlane.transparent = true;
 // scene.add(meshPlane)
 
+const tloader = new THREE.TextureLoader().setPath( 'textures/' );
+				const filenames = [ 'digital_rain.gif', 'matrix.png'];
 
+				textures = { none: null };
+
+				for ( let i = 0; i < filenames.length; i ++ ) {
+
+					const filename = filenames[ i ];
+
+					const texture = tloader.load( filename );
+					texture.minFilter = THREE.LinearFilter;
+					texture.magFilter = THREE.LinearFilter;
+					texture.encoding = THREE.sRGBEncoding;
+
+					textures[ filename ] = texture;
+
+				}
 // Lights
-let spotLight = new THREE.SpotLight( 0x7b7b7b, 1 );
+let spotLight = new THREE.SpotLight( 0x7b7b7b, 1.5 );
+                spotLight.castShadow = true;
+                spotLight.shadow.mapSize.width = 1024;
+				spotLight.shadow.mapSize.height = 1024;
+                spotLight.shadow.camera.near = 10;
+				spotLight.shadow.camera.far = 200;
+                spotLight.shadow.focus = 1;
+                spotLight.map = textures['digital_rain.gif'];
                 spotLight.angle = 1;
 				spotLight.position.set( 0.5, .8, 2 );
 				spotLight.position.multiplyScalar( 70 );
@@ -170,13 +192,15 @@ let spotLight = new THREE.SpotLight( 0x7b7b7b, 1 );
                 spotLight.focus = 1;
 				scene.add( spotLight );
 let spotLight2 = new THREE.SpotLight( 0x7b7b7b, 3 );
-                scene.add( spotLight2 );
+                spotLight2.castShadow = true;
                 spotLight2.angle = .5;
                 spotLight2.position.y = 2;
                 spotLight2.position.x = -3;
                 spotLight2.position.z = -8;
-                const spotLightHelper = new THREE.SpotLightHelper( spotLight2 );
-                scene.add( spotLightHelper );
+                spotLight2.pnumbra = 1;
+                spotLight2.focus = 1;
+                scene.add( spotLight2 );
+
 const light = new THREE.AmbientLight( 0x8affa7, 0.7 ); // soft white light
 scene.add( light );
 
@@ -214,56 +238,59 @@ function onClick(event) {
     raycaster.setFromCamera(mouse, camera);
     let intersect;
     intersect = raycaster.intersectObjects(scene.children, true);
+
     if (intersect.length > 0 ) {
         console.log(intersect)
         console.log(mouse.x, mouse.y);
         console.log(intersect[0].object.name);
-    if(intersect[0].object.name == "TVSCREEN") {
-        //There is a mobile size issue here needs to be resolved
-        const textureLoader = new THREE.TextureLoader().load('catpicture.jpg');
-        let infoPane = new THREE.PlaneGeometry(0.5,0.5);
-        //infoPane.rotateY(- Math.PI / 2);
-        infoPane.translate(0,-0.01,.51);
-        const infoMaterial = new THREE.MeshBasicMaterial({color: 0xffff00, side: THREE.DoubleSide});
-        const Phongmaterial = new THREE.MeshBasicMaterial({ map: textureLoader });
-        const infoMesh = new THREE.Mesh(infoPane, Phongmaterial);
-        //object catchable name
-        infoMesh.name = "INFO-TV";
-        scene.add(infoMesh);
-        blurred = false;
-    }
-    if(intersect[0].object.name == "PHONEBUTTON"){
-        //There is a mobile issue here needs to be resolved 
-        let infoPane = new THREE.PlaneGeometry(0.3,0.5);
-        infoPane.rotateY(- Math.PI / 2);
-        infoPane.translate(0.44,-0.01,0);
-        const infoMaterial = new THREE.MeshBasicMaterial({color: 0xffff00, side: THREE.DoubleSide});
-        const infoMesh = new THREE.Mesh(infoPane, infoMaterial);
-        //object catchable name
-        infoMesh.name = "INFO-TV";
-        scene.add(infoMesh);
-        blurred = false;
-    }
-    if(intersect[0].object.name == "book_stack_1" || intersect[0].object.name == "book_stack_3" ||
-        intersect[0].object.name == "book_stack_2" || intersect[0].object.name == "book_stack_4" || intersect[0].object.name == "book_stack_6" ) {
-            //There is a mobile issue here needs to be resolved 
-        let infoPane = new THREE.PlaneGeometry(0.3,0.5);
-        infoPane.rotateY(0.48);
-        infoPane.translate(-0.27,0,-.4);
-        const infoMaterial = new THREE.MeshBasicMaterial({color: 0xffff00, side: THREE.DoubleSide});
-        const infoMesh = new THREE.Mesh(infoPane, infoMaterial);
-        //object catchable name
-        infoMesh.name = "INFO-TV";
-        scene.add(infoMesh);
-        blurred = false;
+        // to remove the object - need to make this a function
+        if(intersect[0].object.name == "INFO-TV") {
+            console.log("removed");
+            let selectedObject = scene.getObjectByName("INFO-TV")
+            scene.remove(selectedObject);
+            return;
+            
         }
-    // to remove the object - need to make this a function
-    if(intersect[0].object.name == "INFO-TV") {
-        console.log("removed");
-        let selectedObject = scene.getObjectByName("INFO-TV")
-        scene.remove(selectedObject);
-        blurred = true;
-    }
+        if(intersect[0].object.name == "TVSCREEN") {
+            //There is a mobile size issue here needs to be resolved
+            const textureLoader = new THREE.TextureLoader().load('catpicture.jpg');
+            let infoPane = new THREE.PlaneGeometry(0.5,0.5);
+            //infoPane.rotateY(- Math.PI / 2);
+            infoPane.translate(0,0.3,.8);
+            const infoMaterial = new THREE.MeshBasicMaterial({color: 0xffff00, side: THREE.DoubleSide});
+            const Phongmaterial = new THREE.MeshBasicMaterial({ map: textureLoader });
+            const infoMesh = new THREE.Mesh(infoPane, Phongmaterial);
+            //object catchable name
+            infoMesh.name = "INFO-TV";
+            scene.add(infoMesh);
+            
+        }
+        if(intersect[0].object.name == "PHONEBUTTON"){
+            //There is a mobile issue here needs to be resolved 
+            let infoPane = new THREE.PlaneGeometry(0.3,0.5);
+            infoPane.rotateY(- Math.PI / 2);
+            infoPane.translate(0.86,0.31,0);
+            const infoMaterial = new THREE.MeshBasicMaterial({color: 0xffff00, side: THREE.DoubleSide});
+            const infoMesh = new THREE.Mesh(infoPane, infoMaterial);
+            //object catchable name
+            infoMesh.name = "INFO-TV";
+            scene.add(infoMesh);
+            
+        }
+        if(intersect[0].object.name == "book_stack_1" || intersect[0].object.name == "book_stack_3" ||
+            intersect[0].object.name == "book_stack_2" || intersect[0].object.name == "book_stack_4" || 
+            intersect[0].object.name == "book_stack_6") {
+                //There is a mobile issue here needs to be resolved 
+            let infoPane = new THREE.PlaneGeometry(0.3,0.5);
+            infoPane.rotateY(0.42);
+            infoPane.translate(-0.2,0.3,-.8);
+            const infoMaterial = new THREE.MeshBasicMaterial({color: 0xffff00, side: THREE.DoubleSide});
+            const infoMesh = new THREE.Mesh(infoPane, infoMaterial);
+            //object catchable name
+            infoMesh.name = "INFO-TV";
+            scene.add(infoMesh);
+    
+            } 
 
   }
 }
