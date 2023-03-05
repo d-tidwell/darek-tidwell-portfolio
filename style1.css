@@ -10,12 +10,15 @@ body {
 
 
 .navbar .navbar .navbar-brand {
-    color: greenyellow;
+    color: #22903d;
 }
 .navbar.navbar.collapse.navbar-nav.nav-item.nav-link{
-    color: greenyellow;
+    color: #22903d;
 
 }
+.navbar.navbar.navbar-inner{
+  background:transparent;
+  }
 
 .progress-bar-container {
   position: absolute;
@@ -43,17 +46,18 @@ body {
   padding-top:0px;
   padding-bottom:0px;
   border-radius:50px;
-  background: greenyellow;
-  background-color: greenyellow;
+  background: #22903d;
+  background-color: #22903d;
 }
 label {
-  color: greenyellow;
+  color: #22903d;
   font-size: 2rem;
 }
 .navbar {
     
     z-index: 1; /* integer */
     padding-bottom: 0%;
+    background:transparent;
     
   }
 

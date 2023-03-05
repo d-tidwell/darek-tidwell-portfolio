@@ -2,7 +2,7 @@ import * as THREE from 'https://cdn.skypack.dev/three@0.128.0/build/three.module
 import { OrbitControls } from 'https://cdn.skypack.dev/three@0.128.0/examples/jsm/controls/OrbitControls.js';
 import { GLTFLoader } from "https://cdn.skypack.dev/three@0.128.0/examples/jsm/loaders/GLTFLoader.js";
 
-let camera, scene, renderer, raycaster, mouse, canvasBounds, textures;
+let camera, scene, renderer, raycaster, mouse, canvasBounds;
 
 const sizes = {
     width: window.innerWidth,
@@ -103,12 +103,9 @@ box4.translate(0,0,-.4)
 box4.castShadow = true;
 
 
-const plane = new THREE.PlaneGeometry(5000,5000)
-plane.receiveShadow= true;
-plane.rotateX(- Math.PI / 2)
 
 // Materials
-const default_material = new THREE.MeshNormalMaterial();
+
 const material = new THREE.MeshPhysicalMaterial({
     color : 0x049ef4,
     roughness : 0.89,
@@ -153,29 +150,6 @@ const mesh4 = new THREE.Mesh( box4, material );
 // mesh4.name = 'tester';
 // scene.add( mesh4 );
 
-// const meshPlane = new THREE.Mesh (plane, shadowMaterial);
-// meshPlane.position.y = -0.2;
-// meshPlane.receiveShadow = true;
-// meshPlane.transparent = true;
-// scene.add(meshPlane)
-
-const tloader = new THREE.TextureLoader().setPath( 'textures/' );
-				const filenames = [ 'digital_rain.gif', 'matrix.png'];
-
-				textures = { none: null };
-
-				for ( let i = 0; i < filenames.length; i ++ ) {
-
-					const filename = filenames[ i ];
-
-					const texture = tloader.load( filename );
-					texture.minFilter = THREE.LinearFilter;
-					texture.magFilter = THREE.LinearFilter;
-					texture.encoding = THREE.sRGBEncoding;
-
-					textures[ filename ] = texture;
-
-				}
 // Lights
 let spotLight = new THREE.SpotLight( 0x7b7b7b, 1.5 );
                 spotLight.castShadow = true;
@@ -184,7 +158,6 @@ let spotLight = new THREE.SpotLight( 0x7b7b7b, 1.5 );
                 spotLight.shadow.camera.near = 10;
 				spotLight.shadow.camera.far = 200;
                 spotLight.shadow.focus = 1;
-                spotLight.map = textures['digital_rain.gif'];
                 spotLight.angle = 1;
 				spotLight.position.set( 0.5, .8, 2 );
 				spotLight.position.multiplyScalar( 70 );
@@ -244,24 +217,31 @@ function onClick(event) {
         console.log(mouse.x, mouse.y);
         console.log(intersect[0].object.name);
         // to remove the object - need to make this a function
-        if(intersect[0].object.name == "INFO-TV") {
+        if(intersect[0].object.name == "INFO-TV" || intersect[0].object.name == "INFO-TRANS") {
             console.log("removed");
-            let selectedObject = scene.getObjectByName("INFO-TV")
+            let selectedObject = scene.getObjectByName("INFO-TV");
+            let selectedBackground = scene.getObjectByName("INFO-TRANS");
             scene.remove(selectedObject);
+            scene.remove(selectedBackground);
             return;
             
         }
         if(intersect[0].object.name == "TVSCREEN") {
             //There is a mobile size issue here needs to be resolved
-            const textureLoader = new THREE.TextureLoader().load('catpicture.jpg');
+            const textureLoader2 = new THREE.TextureLoader().load('info-tv-projects-trans.png')
+            const textureLoader = new THREE.TextureLoader().load('info-tv-projects.png');
             let infoPane = new THREE.PlaneGeometry(0.5,0.5);
             //infoPane.rotateY(- Math.PI / 2);
             infoPane.translate(0,0.3,.8);
-            const infoMaterial = new THREE.MeshBasicMaterial({color: 0xffff00, side: THREE.DoubleSide});
-            const Phongmaterial = new THREE.MeshBasicMaterial({ map: textureLoader });
+            const infoMaterial = new THREE.MeshBasicMaterial({map: textureLoader2, side: THREE.DoubleSide, transparent: true, opacity: 0.72});
+            const Phongmaterial = new THREE.MeshBasicMaterial({ map: textureLoader, side: THREE.DoubleSide, transparent: true, opacity:1 });
+            const infoMeshBackground = new THREE.Mesh(infoPane, infoMaterial)
+            
             const infoMesh = new THREE.Mesh(infoPane, Phongmaterial);
             //object catchable name
             infoMesh.name = "INFO-TV";
+            infoMeshBackground.name ="INFO-TRANS";
+            scene.add(infoMeshBackground);
             scene.add(infoMesh);
             
         }
