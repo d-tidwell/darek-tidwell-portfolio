@@ -25,7 +25,7 @@ loader.load( 'sony_trinitron_prl/scene.gltf', function ( gltf ) {
     tvModel.castShadow = true;
     tvModel.scale.set(0.001, 0.001, 0.001);
     tvModel.position.z= 0.6;
-    tvModel.position.y=0.25;
+    tvModel.position.y=0.14;
     tvModel.rotation.set(0,3.55,0)
     scene.add( tvModel );
 
@@ -41,9 +41,10 @@ loader.load( 'sony_trinitron_prl/scene.gltf', function ( gltf ) {
 const loader2 = new GLTFLoader(loadingManager);
 loader2.load( 'brick_phone/scene.gltf', function ( gltf2 ) {
     let phoneModel = gltf2.scene;
+    phoneModel.castShadow = true;
     phoneModel.scale.set(0.025, 0.025, 0.025);
     phoneModel.position.x= 0.65;
-    phoneModel.position.y=0.25;
+    phoneModel.position.y=0.14;
     phoneModel.rotation.set(0,-4.7,0)
     scene.add( phoneModel );
 
@@ -63,7 +64,7 @@ loader.load( 'book_stack.glb', function ( gltf ) {
     bookModel.castShadow = true;
     bookModel.scale.set(.2, .2, .2);
     bookModel.position.z= -0.5;
-    bookModel.position.y= 0.4-0.28;
+    bookModel.position.y= 0;
     bookModel.position.x= -0.2;
     bookModel.rotation.set(0,5.1,0)
     scene.add( bookModel );
@@ -80,11 +81,12 @@ loader.load( 'book_stack.glb', function ( gltf ) {
 const loader4 = new GLTFLoader(loadingManager);
 loader4.load( 'ibm_model_m_keyboard/working.glb', function ( gltf4 ) {
     let kBModel = gltf4.scene;
+    kBModel.castShadow = true;
     kBModel.scale.set(1, 1, 1);
     kBModel.position.x= 0.058;
-    kBModel.position.y=0.11;
+    kBModel.position.y=0.0;
     kBModel.position.z=0.8;
-    kBModel.rotation.set(0,1.9,0)
+    kBModel.rotation.set(0,1.95,0)
     scene.add( kBModel );
 
 }, function ( xhr ) {
@@ -104,7 +106,7 @@ camera = new THREE.PerspectiveCamera( 70, sizes.width / sizes.height, 0.01, 10 )
 camera.position.z = 1.5;
 
 scene = new THREE.Scene();
-// scene.fog = new THREE.Fog( 0x121111, 0.00025, .2 );
+ scene.fog = new THREE.Fog(  0x22903d, 0.00025, .00009 );
 scene.add(camera);
 
 // Geometry 
@@ -145,12 +147,13 @@ video.onloadeddata = function () {
 //Create your video texture:
 const videoTexture = new THREE.VideoTexture(video);
 videoTexture.needsUpdate = true;
-const videoMaterial = new THREE.MeshBasicMaterial({
+const videoMaterial = new THREE.MeshPhysicalMaterial({
     map: videoTexture,
     side: THREE.DoubleSide,
     toneMapped: false,
     
 });
+;
 const circle = new THREE.CircleGeometry(3, 64);
 circle.rotateX( - Math.PI / 2 );
 circle.rotateY(-Math.PI / 2);
@@ -193,7 +196,7 @@ let spotLight2 = new THREE.SpotLight( 0x7b7b7b, 3 );
                 spotLight2.focus = 1;
                 scene.add( spotLight2 );
 
-const light = new THREE.AmbientLight( 0x8affa7, 0.7 ); // soft white light
+const light = new THREE.AmbientLight( 0x8affa7, 0.5 ); // soft white light
 scene.add( light );
 
 // Renderer
