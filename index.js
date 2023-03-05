@@ -330,7 +330,7 @@ function animate() {
     // spotLight2.position.z = Math.sin( time ) * 25;
     // console.log(spotLight2.position)
     camera.updateProjectionMatrix();
-    circle.rotateY(0.0003)
+    //circle.rotateY(0.0003)
     renderer.render( scene, camera );
     requestAnimationFrame( animate );
 
