@@ -154,16 +154,17 @@ const videoMaterial = new THREE.MeshPhysicalMaterial({
     
 });
 ;
-const circle = new THREE.CircleGeometry(3, 64);
-circle.rotateX( - Math.PI / 2 );
-circle.rotateY(0);
-const circleMat = new THREE.Mesh(circle, videoMaterial);
-scene.add(circleMat);
+// const circle = new THREE.CircleGeometry(3, 64);
+// circle.rotateX( - Math.PI / 2 );
+// circle.rotateY(0);
+// const circleMat = new THREE.Mesh(circle, videoMaterial);
+// scene.add(circleMat);
 // DOME
 const sphereEnv = new THREE.SphereGeometry(3,64,32);
 sphereEnv.rotateX(Math.PI/2 +1.5);
 sphereEnv.rotateY(Math.PI/2 + 1.5);
 const sphereMat = new THREE.Mesh(sphereEnv, videoMaterial);
+sphereMat.name = "env";
 scene.add(sphereMat);
 // Meshs
 //const mesh1 = new THREE.Mesh( box1, material );
@@ -309,7 +310,7 @@ function onClick(event) {
             let infoPane = new THREE.PlaneGeometry(0.6,1);
             infoPane.rotateY( Math.PI / 2);
             infoPane.rotateY(2);
-            infoPane.translate(-0.4,0.5,-.8);
+            infoPane.translate(-0.4,0.55,-.8);
             const infoMaterial = new THREE.MeshBasicMaterial({map: textureLoader2, side: THREE.DoubleSide, transparent: true, opacity: 0.72});
             const Phongmaterial = new THREE.MeshBasicMaterial({ map: textureLoader, side: THREE.DoubleSide, transparent: true, opacity:1 });
             const infoMeshBackground = new THREE.Mesh(infoPane, infoMaterial)
@@ -348,7 +349,7 @@ function animate() {
     // spotLight2.position.z = Math.sin( time ) * 25;
     // console.log(spotLight2.position)
     camera.updateProjectionMatrix();
-    //circle.rotateY(0.0003)
+    sphereEnv.rotateY(0.0006);
     renderer.render( scene, camera );
     requestAnimationFrame( animate );
 
