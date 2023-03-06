@@ -99,6 +99,27 @@ loader4.load( 'ibm_model_m_keyboard/working.glb', function ( gltf4 ) {
 
 } );
 
+const loader5 = new GLTFLoader(loadingManager);
+loader5.load( 'bent_spoon/working.glb', function ( gltf4 ) {
+    let spoonModel = gltf4.scene;
+    spoonModel.castShadow = true;
+    spoonModel.scale.set(.3, .3, .3);
+    spoonModel.position.x= -0.8;
+    //spoonModel.rotateY=-3;
+    // kBModel.position.z=0.8;
+    spoonModel.rotation.set(0,5,0)
+    scene.add( spoonModel );
+
+}, function ( xhr ) {
+
+    console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded-phone' );
+
+}, undefined, function ( error ) {
+
+    console.error( error );
+
+} );
+
 
 
 // Camera
