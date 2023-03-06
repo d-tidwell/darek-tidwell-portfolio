@@ -142,10 +142,11 @@ const loader7 = new GLTFLoader(loadingManager);
 loader7.load( 'freefall/scene.glb', function ( gltf4 ) {
     let manModel = gltf4.scene;
     manModel.castShadow = true;
+    manModel.recieveShadow = true;
     manModel.scale.set(0.04, 0.04, 0.04);
     manModel.position.y= 0.25;
     // kBModel.position.z=0.8;
-    manModel.rotation.set(0,15,0)
+    manModel.rotation.set(0,10,0)
     scene.add( manModel );
 
 }, function ( xhr ) {
@@ -238,7 +239,7 @@ const mesh4 = new THREE.Mesh( box4, material );
 // scene.add( mesh4 );
 
 // Lights
-let spotLight = new THREE.SpotLight( 0x7b7b7b, 1.5 );
+let spotLight = new THREE.SpotLight( 0xBCF1CD, 1 );
                 spotLight.castShadow = true;
                 spotLight.shadow.mapSize.width = 1024;
 				spotLight.shadow.mapSize.height = 1024;
@@ -251,7 +252,7 @@ let spotLight = new THREE.SpotLight( 0x7b7b7b, 1.5 );
                 spotLight.pnumbra = 1;
                 spotLight.focus = 1;
 				scene.add( spotLight );
-let spotLight2 = new THREE.SpotLight( 0x7b7b7b, 1.5 );
+let spotLight2 = new THREE.SpotLight( 0xBCF1CD, 1 );
                 spotLight2.castShadow = true;
                 spotLight2.angle = .5;
                 spotLight2.position.y = 2;
@@ -261,7 +262,7 @@ let spotLight2 = new THREE.SpotLight( 0x7b7b7b, 1.5 );
                 spotLight2.focus = 1;
                 scene.add( spotLight2 );
 
-const light = new THREE.AmbientLight( 0x8affa7, 0.5 ); // soft white light
+const light = new THREE.AmbientLight( 0xBCF1CD, 0.5); // soft white light
 scene.add( light );
 // const pointSpoon = new THREE.PointLight(0x7b7b7b, 3, 100 )
 // pointSpoon.position.set( -2.2, 0, 0);
@@ -276,6 +277,7 @@ renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 //renderer.outputEncoding = THREE.sRGBEncoding;
 renderer.antialias = true;
 renderer.shadowMap.enabled = true
+//renderer.physicallyCorrectLights = true;
 
 document.body.appendChild( renderer.domElement );
 
