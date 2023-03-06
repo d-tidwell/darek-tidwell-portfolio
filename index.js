@@ -38,25 +38,25 @@ loader.load( 'sony_trinitron_prl/scene.gltf', function ( gltf ) {
     console.error( error );
 
 } );
-const loader2 = new GLTFLoader(loadingManager);
-loader2.load( 'brick_phone/scene.gltf', function ( gltf2 ) {
-    let phoneModel = gltf2.scene;
-    phoneModel.castShadow = true;
-    phoneModel.scale.set(0.025, 0.025, 0.025);
-    phoneModel.position.x= 0.65;
-    phoneModel.position.y=0.14;
-    phoneModel.rotation.set(0,-4.7,0)
-    scene.add( phoneModel );
+// const loader2 = new GLTFLoader(loadingManager);
+// loader2.load( 'brick_phone/scene.gltf', function ( gltf2 ) {
+//     let phoneModel = gltf2.scene;
+//     phoneModel.castShadow = true;
+//     phoneModel.scale.set(0.025, 0.025, 0.025);
+//     phoneModel.position.x= 0.65;
+//     phoneModel.position.y=0.14;
+//     phoneModel.rotation.set(0,-4.7,0)
+//     scene.add( phoneModel );
 
-}, function ( xhr ) {
+// }, function ( xhr ) {
 
-    console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded-phone' );
+//     console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded-phone' );
 
-}, undefined, function ( error ) {
+// }, undefined, function ( error ) {
 
-    console.error( error );
+//     console.error( error );
 
-} );
+// } );
 
 const loader3 = new GLTFLoader(loadingManager);
 loader.load( 'book_stack.glb', function ( gltf ) {
@@ -109,6 +109,25 @@ loader5.load( 'bent_spoon/working.glb', function ( gltf4 ) {
     // kBModel.position.z=0.8;
     spoonModel.rotation.set(0,5,0)
     scene.add( spoonModel );
+
+}, function ( xhr ) {
+
+    console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded-phone' );
+
+}, undefined, function ( error ) {
+
+    console.error( error );
+
+} );
+const loader6 = new GLTFLoader(loadingManager);
+loader6.load( 'white_rabbit/scene.glb', function ( gltf4 ) {
+    let rabbitModel = gltf4.scene;
+    rabbitModel.castShadow = true;
+    rabbitModel.scale.set(1, 1, 1);
+    rabbitModel.position.x= .65;
+    // kBModel.position.z=0.8;
+    rabbitModel.rotation.set(0,15,0)
+    scene.add( rabbitModel );
 
 }, function ( xhr ) {
 
@@ -214,7 +233,7 @@ let spotLight = new THREE.SpotLight( 0x7b7b7b, 1.5 );
                 spotLight.pnumbra = 1;
                 spotLight.focus = 1;
 				scene.add( spotLight );
-let spotLight2 = new THREE.SpotLight( 0x7b7b7b, 3 );
+let spotLight2 = new THREE.SpotLight( 0x7b7b7b, 1.5 );
                 spotLight2.castShadow = true;
                 spotLight2.angle = .5;
                 spotLight2.position.y = 2;
@@ -226,7 +245,11 @@ let spotLight2 = new THREE.SpotLight( 0x7b7b7b, 3 );
 
 const light = new THREE.AmbientLight( 0x8affa7, 0.5 ); // soft white light
 scene.add( light );
-
+// const pointSpoon = new THREE.PointLight(0x7b7b7b, 3, 100 )
+// pointSpoon.position.set( -2.2, 0, 0);
+// const pointLightHandler = new THREE.PointLightHelper(pointSpoon, 1)
+// scene.add(pointSpoon);
+// scene.add(pointLightHandler);
 // Renderer
 
 renderer = new THREE.WebGLRenderer( {antialias: true } );
@@ -243,7 +266,7 @@ const controls = new OrbitControls( camera, renderer.domElement );
 controls.minDistance = 1;
 controls.maxDistance = 2;
 controls.screenSpacePanning = false;
-controls.maxPolarAngle = Math.PI / 2;
+// controls.maxPolarAngle = Math.PI / 2;
 controls.target.set(0, 0.25, 0);
 
 
@@ -304,7 +327,8 @@ function onClick(event) {
             scene.add(infoMesh);
             
         }
-        if(intersect[0].object.name == "PHONEBUTTON" || intersect[0].object.name == "PHONE_MAIN_LOW"){
+        //if(intersect[0].object.name == "PHONEBUTTON" || intersect[0].object.name == "PHONE_MAIN_LOW")
+        if(intersect[0].object.name == "rabbit" || intersect[0].object.name == "rabbit"){
             //There is a mobile issue here needs to be resolved
             const textureLoader2 = new THREE.TextureLoader().load('info-tv-projects-trans.png')
             const textureLoader = new THREE.TextureLoader().load('info-tv-contacts.png'); 
