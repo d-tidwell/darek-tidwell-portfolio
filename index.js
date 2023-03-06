@@ -156,9 +156,15 @@ const videoMaterial = new THREE.MeshPhysicalMaterial({
 ;
 const circle = new THREE.CircleGeometry(3, 64);
 circle.rotateX( - Math.PI / 2 );
-circle.rotateY(-Math.PI / 2);
+circle.rotateY(0);
 const circleMat = new THREE.Mesh(circle, videoMaterial);
 scene.add(circleMat);
+// DOME
+const sphereEnv = new THREE.SphereGeometry(3,64,32);
+sphereEnv.rotateX(Math.PI/2 +1.5);
+sphereEnv.rotateY(Math.PI/2 + 1.5);
+const sphereMat = new THREE.Mesh(sphereEnv, videoMaterial);
+scene.add(sphereMat);
 // Meshs
 //const mesh1 = new THREE.Mesh( box1, material );
 //scene.add( mesh1 );
