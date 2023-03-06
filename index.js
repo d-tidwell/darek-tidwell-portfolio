@@ -258,7 +258,7 @@ function onClick(event) {
             return;
             
         }
-        if(intersect[0].object.name == "TVSCREEN") {
+        if(intersect[0].object.name == "TVSCREEN" || intersect[0].object.name[0] == "O") {
             //There is a mobile size issue here needs to be resolved
             const textureLoader2 = new THREE.TextureLoader().load('info-tv-projects-trans.png')
             const textureLoader = new THREE.TextureLoader().load('info-tv-projects.png');
@@ -268,7 +268,6 @@ function onClick(event) {
             const infoMaterial = new THREE.MeshBasicMaterial({map: textureLoader2, side: THREE.DoubleSide, transparent: true, opacity: 0.72});
             const Phongmaterial = new THREE.MeshBasicMaterial({ map: textureLoader, side: THREE.DoubleSide, transparent: true, opacity:1 });
             const infoMeshBackground = new THREE.Mesh(infoPane, infoMaterial)
-            
             const infoMesh = new THREE.Mesh(infoPane, Phongmaterial);
             //object catchable name
             infoMesh.name = "INFO-TV";
@@ -278,28 +277,41 @@ function onClick(event) {
             
         }
         if(intersect[0].object.name == "PHONEBUTTON" || intersect[0].object.name == "PHONE_MAIN_LOW"){
-            //There is a mobile issue here needs to be resolved 
+            //There is a mobile issue here needs to be resolved
+            const textureLoader2 = new THREE.TextureLoader().load('info-tv-projects-trans.png')
+            const textureLoader = new THREE.TextureLoader().load('info-tv-contacts.png'); 
             let infoPane = new THREE.PlaneGeometry(0.3,0.5);
-            infoPane.rotateY(- Math.PI / 2);
+            infoPane.rotateY( Math.PI / 2);
             infoPane.translate(0.86,0.31,0);
-            const infoMaterial = new THREE.MeshBasicMaterial({color: 0xffff00, side: THREE.DoubleSide});
-            const infoMesh = new THREE.Mesh(infoPane, infoMaterial);
+            const infoMaterial = new THREE.MeshBasicMaterial({map: textureLoader2, side: THREE.DoubleSide, transparent: true, opacity: 0.72});
+            const Phongmaterial = new THREE.MeshBasicMaterial({ map: textureLoader, side: THREE.DoubleSide, transparent: true, opacity:1 });
+            const infoMeshBackground = new THREE.Mesh(infoPane, infoMaterial)
+            const infoMesh = new THREE.Mesh(infoPane, Phongmaterial);
             //object catchable name
             infoMesh.name = "INFO-TV";
+            infoMeshBackground.name ="INFO-TRANS";
+            scene.add(infoMeshBackground);
             scene.add(infoMesh);
             
         }
         if(intersect[0].object.name == "book_stack_1" || intersect[0].object.name == "book_stack_3" ||
             intersect[0].object.name == "book_stack_2" || intersect[0].object.name == "book_stack_4" || 
             intersect[0].object.name == "book_stack_6") {
-                //There is a mobile issue here needs to be resolved 
-            let infoPane = new THREE.PlaneGeometry(0.3,0.5);
-            infoPane.rotateY(0.42);
-            infoPane.translate(-0.2,0.3,-.8);
-            const infoMaterial = new THREE.MeshBasicMaterial({color: 0xffff00, side: THREE.DoubleSide});
-            const infoMesh = new THREE.Mesh(infoPane, infoMaterial);
+                //There is a mobile issue here needs to be resolved
+            const textureLoader2 = new THREE.TextureLoader().load('info-tv-projects-trans.png')
+            const textureLoader = new THREE.TextureLoader().load('info-tv-resume.png');
+            let infoPane = new THREE.PlaneGeometry(0.6,1);
+            infoPane.rotateY( Math.PI / 2);
+            infoPane.rotateY(2);
+            infoPane.translate(-0.4,0.5,-.8);
+            const infoMaterial = new THREE.MeshBasicMaterial({map: textureLoader2, side: THREE.DoubleSide, transparent: true, opacity: 0.72});
+            const Phongmaterial = new THREE.MeshBasicMaterial({ map: textureLoader, side: THREE.DoubleSide, transparent: true, opacity:1 });
+            const infoMeshBackground = new THREE.Mesh(infoPane, infoMaterial)
+            const infoMesh = new THREE.Mesh(infoPane, Phongmaterial);
             //object catchable name
             infoMesh.name = "INFO-TV";
+            infoMeshBackground.name ="INFO-TRANS";
+            scene.add(infoMeshBackground);
             scene.add(infoMesh);
     
             } 
