@@ -138,12 +138,30 @@ loader6.load( 'white_rabbit/scene.glb', function ( gltf4 ) {
     console.error( error );
 
 } );
+const loader7 = new GLTFLoader(loadingManager);
+loader7.load( 'freefall/scene.glb', function ( gltf4 ) {
+    let manModel = gltf4.scene;
+    manModel.castShadow = true;
+    manModel.scale.set(0.04, 0.04, 0.04);
+    manModel.position.y= 0.25;
+    // kBModel.position.z=0.8;
+    manModel.rotation.set(0,15,0)
+    scene.add( manModel );
 
+}, function ( xhr ) {
+
+    console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded-phone' );
+
+}, undefined, function ( error ) {
+
+    console.error( error );
+
+} );
 
 
 // Camera
 camera = new THREE.PerspectiveCamera( 70, sizes.width / sizes.height, 0.01, 10 );
-camera.position.z = 1.5;
+camera.position.z = 2;
 
 scene = new THREE.Scene();
  scene.fog = new THREE.Fog(  0x22903d, 0.00025, .00009 );
@@ -264,7 +282,7 @@ document.body.appendChild( renderer.domElement );
 // Controls
 const controls = new OrbitControls( camera, renderer.domElement );
 controls.minDistance = 1;
-controls.maxDistance = 2;
+controls.maxDistance = 2.5;
 controls.screenSpacePanning = false;
 // controls.maxPolarAngle = Math.PI / 2;
 controls.target.set(0, 0.25, 0);
@@ -275,7 +293,7 @@ controls.target.set(0, 0.25, 0);
 
 raycaster = new THREE.Raycaster();
 // raycaster.near =0;
-raycaster.far = 1.6;
+raycaster.far = 2.6;
 
 mouse = new THREE.Vector2();
 function onMouseMove( event ) {
