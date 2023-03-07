@@ -329,7 +329,7 @@ function onClick(event) {
             return;
             
         }
-        if(intersect[0].object.name == "TVSCREEN" || intersect[0].object.name[0] == "O") {
+        if(intersect[0].object.name == "TVSCREEN" || intersect[0].object.name[0] == "TV_body_low002" || "TV_body_low002") {
             //There is a mobile size issue here needs to be resolved
             const textureLoader2 = new THREE.TextureLoader().load('info-tv-projects-trans.png')
             const textureLoader = new THREE.TextureLoader().load('info-tv-projects.png');
