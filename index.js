@@ -329,7 +329,7 @@ function onClick(event) {
             return;
             
         }
-        if(intersect[0].object.name == "TVSCREEN" || intersect[0].object.name[0] == "TV_body_low002" || "TV_body_low002") {
+        if(intersect[0].object.name == "TVSCREEN" || intersect[0].object.name[0] == "TV_body_low002" || intersect[0].object.name[0]== "TV_body_low002") {
             //There is a mobile size issue here needs to be resolved
             const textureLoader2 = new THREE.TextureLoader().load('info-tv-projects-trans.png')
             const textureLoader = new THREE.TextureLoader().load('info-tv-projects.png');
@@ -348,7 +348,7 @@ function onClick(event) {
             
         }
         //if(intersect[0].object.name == "PHONEBUTTON" || intersect[0].object.name == "PHONE_MAIN_LOW")
-        if(intersect[0].object.name == "rabbit" || intersect[0].object.name == "rabbit"){
+        if(intersect[0].object.name == "rabbit"){
             //There is a mobile issue here needs to be resolved
             const textureLoader2 = new THREE.TextureLoader().load('info-tv-projects-trans.png')
             const textureLoader = new THREE.TextureLoader().load('info-tv-contacts.png'); 
