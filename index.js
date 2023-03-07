@@ -333,7 +333,7 @@ function onClick(event) {
             //There is a mobile size issue here needs to be resolved
             const textureLoader2 = new THREE.TextureLoader().load('info-tv-projects-trans.png')
             const textureLoader = new THREE.TextureLoader().load('info-tv-projects.png');
-            let infoPane = new THREE.PlaneGeometry(0.5,0.5);
+            let infoPane = new THREE.PlaneGeometry(0.5,0.8);
             //infoPane.rotateY(- Math.PI / 2);
             infoPane.translate(0,0.3,0.95);
             const infoMaterial = new THREE.MeshBasicMaterial({map: textureLoader2, side: THREE.DoubleSide, transparent: true, opacity: 0.72});
