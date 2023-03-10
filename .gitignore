@@ -90,5 +90,5 @@ lerna-debug.log
 Thumbs.db
 
 #raw video
-/video/floor_video.mp4
+video/floor_video.mp4
 *.mp4
