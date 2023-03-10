@@ -3,6 +3,7 @@ import { OrbitControls } from 'https://cdn.skypack.dev/three@0.128.0/examples/js
 import { GLTFLoader } from "https://cdn.skypack.dev/three@0.128.0/examples/jsm/loaders/GLTFLoader.js";
 
 let camera, scene, renderer, raycaster, mouse, canvasBounds;
+let manModel, rabbitModel;
 
 const sizes = {
     width: window.innerWidth,
@@ -11,7 +12,7 @@ const sizes = {
 // Loading Screen
 const loadingManager = new THREE.LoadingManager();
 const progressBar = document.getElementById("progress-bar");
-loadingManager.onProgress=function(url, loaded, total) {
+loadingManager.onProgress=function(_url, loaded, total) {
     progressBar.value = ( loaded / total) * 100;
 }
 const progressBarContainer = document.querySelector('.progress-bar-container');
@@ -59,7 +60,7 @@ loader.load( 'sony_trinitron_prl/scene.gltf', function ( gltf ) {
 // } );
 
 const loader3 = new GLTFLoader(loadingManager);
-loader.load( 'book_stack.glb', function ( gltf ) {
+loader3.load( 'book_stack.glb', function ( gltf ) {
     let bookModel = gltf.scene;
     bookModel.castShadow = true;
     bookModel.scale.set(.2, .2, .2);
@@ -124,10 +125,11 @@ loader6.load( 'white_rabbit/scene.glb', function ( gltf4 ) {
     let rabbitModel = gltf4.scene;
     rabbitModel.castShadow = true;
     rabbitModel.scale.set(1, 1, 1);
-    rabbitModel.position.x= .65;
+    rabbitModel.position.x= 0.65;
     // kBModel.position.z=0.8;
     rabbitModel.rotation.set(0,15,0)
     scene.add( rabbitModel );
+
 
 }, function ( xhr ) {
 
@@ -146,8 +148,10 @@ loader7.load( 'freefall/scene.glb', function ( gltf4 ) {
     manModel.scale.set(0.04, 0.04, 0.04);
     manModel.position.y= 0.25;
     // kBModel.position.z=0.8;
-    manModel.rotation.set(0,10,0)
+    manModel.rotation.set(0,10,0);
+    //manModel.add(rabbitModel);
     scene.add( manModel );
+    
 
 }, function ( xhr ) {
 
@@ -405,18 +409,18 @@ camera.updateProjectionMatrix(); // Apply changes
 
 animate();
 function animate() {
+    requestAnimationFrame( animate );
 
     // Update trackball controls
     controls.update();
     // const time = performance.now() / 3000;
-
-    // spotLight2.position.x = Math.cos( time ) * 25;
-    // spotLight2.position.z = Math.sin( time ) * 25;
+    // rabbitModel.position.x = Math.cos( time ) * 25;
+    // rabbitModel.position.z = Math.sin( time ) * 25;
     // console.log(spotLight2.position)
     camera.updateProjectionMatrix();
     sphereEnv.rotateY(0.0006);
     renderer.render( scene, camera );
-    requestAnimationFrame( animate );
+    
 
 }
 
