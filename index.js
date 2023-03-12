@@ -266,7 +266,7 @@ function onClick(event) {
     intersect = raycaster.intersectObjects(scene.children, true);
     console.log(intersect)
     console.log(mouse.x, mouse.y);
-    
+  
     if (intersect.length > 0 ) {
         console.log(intersect[0].object.name);
         
@@ -277,20 +277,22 @@ function onClick(event) {
             let selectedBackground = scene.getObjectByName("INFO-TRANS");
             scene.remove(selectedBackground);
             scene.remove(selectedObject);
+            camera.remove(selectedBackground);
+            camera.remove(selectedObject);
             return;
             
         }
         if(intersect[0].object.name == "TV_body_low002" || intersect[0].object.name == "TV_body_low001" || intersect[0].object.name[1] =='b') {
             let selectedObject = scene.getObjectByName("INFO-TV");
             let selectedBackground = scene.getObjectByName("INFO-TRANS");
-            scene.remove(selectedBackground);
-            scene.remove(selectedObject);
+            camera.remove(selectedBackground);
+            camera.remove(selectedObject);
             //There is a mobile size issue here needs to be resolved
             const textureLoader2 = new THREE.TextureLoader().load('info-tv-projects-trans.png')
             const textureLoader = new THREE.TextureLoader().load('info-tv-projects.png');
             let infoPane = new THREE.PlaneGeometry(0.5,0.8);
             //infoPane.rotateY(- Math.PI / 2);
-            infoPane.translate(0,0.3,0.95);
+            //infoPane.translate(0,0.3,0.95);
             const infoMaterial = new THREE.MeshBasicMaterial({map: textureLoader2, side: THREE.DoubleSide, transparent: true, opacity: 0.72});
             const Phongmaterial = new THREE.MeshBasicMaterial({ map: textureLoader, side: THREE.DoubleSide, transparent: true, opacity:1 });
             const infoMeshBackground = new THREE.Mesh(infoPane, infoMaterial)
@@ -298,31 +300,38 @@ function onClick(event) {
             //object catchable name
             infoMesh.name = "INFO-TV";
             infoMeshBackground.name ="INFO-TRANS";
-            scene.add(infoMeshBackground);
-            scene.add(infoMesh);
+            camera.add(infoMeshBackground);
+            camera.add(infoMesh);
+            infoPane.translate(0,0,-0.65);
             
         }
         //if(intersect[0].object.name == "PHONEBUTTON" || intersect[0].object.name == "PHONE_MAIN_LOW")
         if(intersect[0].object.name.includes("rabbit")){
+            console.log(camera.position.z);
             let selectedObject = scene.getObjectByName("INFO-TV");
             let selectedBackground = scene.getObjectByName("INFO-TRANS");
             scene.remove(selectedBackground);
             scene.remove(selectedObject);
+            camera.remove(selectedBackground);
+            camera.remove(selectedObject);
             //There is a mobile issue here needs to be resolved
             const textureLoader2 = new THREE.TextureLoader().load('info-tv-projects-trans.png')
             const textureLoader = new THREE.TextureLoader().load('info-tv-contacts.png'); 
             let infoPane = new THREE.PlaneGeometry(0.3,0.5);
-            infoPane.rotateY( Math.PI / 2);
-            infoPane.translate(0.86,0.31,0);
+            //infoPane.rotateY( Math.PI / 2);
+            //infoPane.translate(0.86,0.31,0);
             const infoMaterial = new THREE.MeshBasicMaterial({map: textureLoader2, side: THREE.DoubleSide, transparent: true, opacity: 0.72});
             const Phongmaterial = new THREE.MeshBasicMaterial({ map: textureLoader, side: THREE.DoubleSide, transparent: true, opacity:1 });
             const infoMeshBackground = new THREE.Mesh(infoPane, infoMaterial)
             const infoMesh = new THREE.Mesh(infoPane, Phongmaterial);
+
             //object catchable name
             infoMesh.name = "INFO-TV";
             infoMeshBackground.name ="INFO-TRANS";
-            scene.add(infoMeshBackground);
-            scene.add(infoMesh);
+            camera.add(infoMeshBackground);
+            camera.add(infoMesh);
+            infoPane.translate(0,0,-0.65);
+             //infoMeshBackground.translate(0,0,-0.65);
             
         }
         if(intersect[0].object.name == "book_stack_1" || intersect[0].object.name == "book_stack_3" ||
@@ -330,15 +339,15 @@ function onClick(event) {
             intersect[0].object.name == "book_stack_6") {
             let selectedObject = scene.getObjectByName("INFO-TV");
             let selectedBackground = scene.getObjectByName("INFO-TRANS");
-            scene.remove(selectedBackground);
-            scene.remove(selectedObject);
+            camera.remove(selectedBackground);
+            camera.remove(selectedObject);
                 //There is a mobile issue here needs to be resolved
             const textureLoader2 = new THREE.TextureLoader().load('info-tv-projects-trans.png')
             const textureLoader = new THREE.TextureLoader().load('info-tv-resume.png');
-            let infoPane = new THREE.PlaneGeometry(0.6,1);
-            infoPane.rotateY( Math.PI / 2);
-            infoPane.rotateY(2);
-            infoPane.translate(-0.4,0.55,-.8);
+            let infoPane = new THREE.PlaneGeometry(0.6,0.90);
+            // infoPane.rotateY( Math.PI / 2);
+            // infoPane.rotateY(2);
+            // infoPane.translate(-0.4,0.55,-.8);
             const infoMaterial = new THREE.MeshBasicMaterial({map: textureLoader2, side: THREE.DoubleSide, transparent: true, opacity: 0.72});
             const Phongmaterial = new THREE.MeshBasicMaterial({ map: textureLoader, side: THREE.DoubleSide, transparent: true, opacity:1 });
             const infoMeshBackground = new THREE.Mesh(infoPane, infoMaterial)
@@ -346,8 +355,9 @@ function onClick(event) {
             //object catchable name
             infoMesh.name = "INFO-TV";
             infoMeshBackground.name ="INFO-TRANS";
-            scene.add(infoMeshBackground);
-            scene.add(infoMesh);
+            camera.add(infoMeshBackground);
+            camera.add(infoMesh);
+            infoPane.translate(0,0.025,-0.65);
     
             } 
 
