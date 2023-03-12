@@ -258,6 +258,15 @@ function onMouseMove( event ) {
   controls.update();
   
 }
+function onTouchMove( event ) {
+    // calculates mouse position in normalized device coordinate -1 to  +1 for both given the canvas size
+    // canvasBounds = renderer.getContext().canvas.getBoundingClientRect();
+    // mouse.x = ( ( event.clientX - canvasBounds.left ) / ( canvasBounds.right - canvasBounds.left ) ) * 2 - 1;
+    // mouse.y = - ( ( event.clientY - canvasBounds.top ) / ( canvasBounds.bottom - canvasBounds.top) ) * 2 + 1;
+    // camera.updateProjectionMatrix();
+    // controls.update();
+    
+  }
 function onClick(event) {
 
     raycaster.setFromCamera(mouse, camera);
@@ -266,6 +275,8 @@ function onClick(event) {
     intersect = raycaster.intersectObjects(scene.children, true);
     console.log(intersect)
     console.log(mouse.x, mouse.y);
+    //mobile
+    //console.log(event.changedTouches[0])
   
     if (intersect.length > 0 ) {
         console.log(intersect[0].object.name);
@@ -364,8 +375,9 @@ function onClick(event) {
   }
 }
 window.addEventListener('mousemove', onMouseMove, false);
+//window.addEventListener('touchmove', onTouchMove, false);
 window.addEventListener('click', onClick);
-window.addEventListener("touchstart", onClick, false);
+window.addEventListener("touchend", onClick, false);
 
 
 // window resize
