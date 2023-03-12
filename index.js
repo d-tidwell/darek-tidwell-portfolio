@@ -51,8 +51,6 @@ loader3.load( 'book_stack.glb', function ( gltf ) {
     let bookModel = gltf.scene;
     bookModel.castShadow = true;
     bookModel.scale.set(0.2, 0.2, 0.2);
-    // bookModel.position.z= -0.5;
-    // bookModel.position.y= 0;
     bookModel.position.x= -0.05;
     bookModel.rotation.set(0,5.1,0)
     bookGroup.add( bookModel );
@@ -71,7 +69,6 @@ loader4.load( 'ibm_model_m_keyboard/working.glb', function ( gltf4 ) {
     let kBModel = gltf4.scene;
     kBModel.castShadow = true;
     kBModel.scale.set(1, 1, 1);
-    // kBModel.position.x= 0.058;
     kBModel.position.y=-0.13;
     kBModel.position.z=0.23;
     kBModel.rotation.set(0.3,1.95,-0.3);
@@ -80,7 +77,7 @@ loader4.load( 'ibm_model_m_keyboard/working.glb', function ( gltf4 ) {
 
 }, function ( xhr ) {
 
-    console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded-phone' );
+    console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded-keyboard' );
 
 }, undefined, function ( error ) {
 
@@ -93,9 +90,6 @@ loader5.load( 'bent_spoon/working.glb', function ( gltf4 ) {
     let spoonModel = gltf4.scene;
     spoonModel.castShadow = true;
     spoonModel.scale.set(.3, .3, .3);
-    // spoonModel.position.x= -0.8;
-    //spoonModel.rotateY=-3;
-    // kBModel.position.z=0.8;
     spoonModel.rotation.set(0,5,0)
     spoonGroup.add(spoonModel);
    
@@ -192,11 +186,7 @@ const videoMaterial = new THREE.MeshPhysicalMaterial({
     
 });
 ;
-// const circle = new THREE.CircleGeometry(3, 64);
-// circle.rotateX( - Math.PI / 2 );
-// circle.rotateY(0);
-// const circleMat = new THREE.Mesh(circle, videoMaterial);
-// scene.add(circleMat);
+
 // DOME
 const sphereEnv = new THREE.SphereGeometry(3,64,32);
 sphereEnv.rotateX(Math.PI/2 +1.5);
@@ -205,20 +195,10 @@ const sphereMat = new THREE.Mesh(sphereEnv, videoMaterial);
 sphereMat.name = "env";
 scene.add(sphereMat);
 // Meshs
-//const mesh1 = new THREE.Mesh( box1, material );
-//scene.add( mesh1 );
-// const mesh2 = new THREE.Mesh( box2, material );
-// mesh2.name = "rear tester";
-// scene.add( mesh2 );
-//const mesh3 = new THREE.Mesh( box3, material );
-//scene.add( mesh3 );
-// const mesh4 = new THREE.Mesh( box4, material );
-// needed for event handler
-// mesh4.name = 'tester';
-// scene.add( mesh4 );
+
 
 // Lights
-let spotLight = new THREE.SpotLight( 0xBCF1CD, 1 );
+let spotLight = new THREE.SpotLight( 0xBCF1CD, .85 );
                 spotLight.castShadow = true;
                 spotLight.shadow.mapSize.width = 1024;
 				spotLight.shadow.mapSize.height = 1024;
@@ -231,7 +211,7 @@ let spotLight = new THREE.SpotLight( 0xBCF1CD, 1 );
                 spotLight.pnumbra = 1;
                 spotLight.focus = 1;
 				scene.add( spotLight );
-let spotLight2 = new THREE.SpotLight( 0xBCF1CD, 1 );
+let spotLight2 = new THREE.SpotLight( 0xBCF1CD, .85 );
                 spotLight2.castShadow = true;
                 spotLight2.angle = .5;
                 spotLight2.position.y = 2;
@@ -243,20 +223,14 @@ let spotLight2 = new THREE.SpotLight( 0xBCF1CD, 1 );
 
 const light = new THREE.AmbientLight( 0xBCF1CD, 0.5); // soft white light
 scene.add( light );
-// const pointSpoon = new THREE.PointLight(0x7b7b7b, 3, 100 )
-// pointSpoon.position.set( -2.2, 0, 0);
-// const pointLightHandler = new THREE.PointLightHelper(pointSpoon, 1)
-// scene.add(pointSpoon);
-// scene.add(pointLightHandler);
+
 // Renderer
 
 renderer = new THREE.WebGLRenderer( {antialias: true } );
 renderer.setSize( window.innerWidth, window.innerHeight );
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-//renderer.outputEncoding = THREE.sRGBEncoding;
 renderer.antialias = true;
 renderer.shadowMap.enabled = true
-//renderer.physicallyCorrectLights = true;
 
 document.body.appendChild( renderer.domElement );
 
@@ -273,8 +247,6 @@ controls.target.set(0, 0.25, 0);
 //click control needs mouse x & y set first with normalized coordinate to set the ray
 
 raycaster = new THREE.Raycaster();
-// raycaster.near =0;
-//raycaster.far = 2.6;
 
 mouse = new THREE.Vector2();
 function onMouseMove( event ) {
@@ -309,6 +281,10 @@ function onClick(event) {
             
         }
         if(intersect[0].object.name == "TV_body_low002" || intersect[0].object.name == "TV_body_low001" || intersect[0].object.name[1] =='b') {
+            let selectedObject = scene.getObjectByName("INFO-TV");
+            let selectedBackground = scene.getObjectByName("INFO-TRANS");
+            scene.remove(selectedBackground);
+            scene.remove(selectedObject);
             //There is a mobile size issue here needs to be resolved
             const textureLoader2 = new THREE.TextureLoader().load('info-tv-projects-trans.png')
             const textureLoader = new THREE.TextureLoader().load('info-tv-projects.png');
@@ -328,6 +304,10 @@ function onClick(event) {
         }
         //if(intersect[0].object.name == "PHONEBUTTON" || intersect[0].object.name == "PHONE_MAIN_LOW")
         if(intersect[0].object.name.includes("rabbit")){
+            let selectedObject = scene.getObjectByName("INFO-TV");
+            let selectedBackground = scene.getObjectByName("INFO-TRANS");
+            scene.remove(selectedBackground);
+            scene.remove(selectedObject);
             //There is a mobile issue here needs to be resolved
             const textureLoader2 = new THREE.TextureLoader().load('info-tv-projects-trans.png')
             const textureLoader = new THREE.TextureLoader().load('info-tv-contacts.png'); 
@@ -348,6 +328,10 @@ function onClick(event) {
         if(intersect[0].object.name == "book_stack_1" || intersect[0].object.name == "book_stack_3" ||
             intersect[0].object.name == "book_stack_2" || intersect[0].object.name == "book_stack_4" || 
             intersect[0].object.name == "book_stack_6") {
+            let selectedObject = scene.getObjectByName("INFO-TV");
+            let selectedBackground = scene.getObjectByName("INFO-TRANS");
+            scene.remove(selectedBackground);
+            scene.remove(selectedObject);
                 //There is a mobile issue here needs to be resolved
             const textureLoader2 = new THREE.TextureLoader().load('info-tv-projects-trans.png')
             const textureLoader = new THREE.TextureLoader().load('info-tv-resume.png');
@@ -415,6 +399,7 @@ function animate(rabbitModel) {
     if(spoonGroup) spoonGroup.position.z = Math.sin( time ) * -1.0;
     if(spoonGroup) spoonGroup.rotateY(0.002);
     if(spoonGroup) spoonGroup.rotateZ(-0.002);
+    if(spoonGroup) spoonGroup.rotateX(-0.002);
 
     if(manGroup) manGroup.position.y = Math.cos( manTime ) * 0.05;
     
