@@ -6,6 +6,7 @@ let camera, scene, renderer, raycaster, mouse, canvasBounds;
 let manModel, rabbitModel;
 
 const rabbitGroup = new THREE.Group();
+const computerGroup = new THREE.Group();
 
 const sizes = {
     width: window.innerWidth,
@@ -27,10 +28,11 @@ loader.load( 'sony_trinitron_prl/scene.gltf', function ( gltf ) {
     let tvModel = gltf.scene;
     tvModel.castShadow = true;
     tvModel.scale.set(0.001, 0.001, 0.001);
-    tvModel.position.z= 0.6;
-    tvModel.position.y=0.14;
-    tvModel.rotation.set(0,3.55,0)
-    scene.add( tvModel );
+    // tvModel.position.z= 0.75;
+    // tvModel.position.y=0.14;
+    tvModel.rotation.set(0,3.55,0.5);
+    computerGroup.add(tvModel);
+   
 
 }, function ( xhr ) {
 
@@ -68,11 +70,12 @@ loader4.load( 'ibm_model_m_keyboard/working.glb', function ( gltf4 ) {
     let kBModel = gltf4.scene;
     kBModel.castShadow = true;
     kBModel.scale.set(1, 1, 1);
-    kBModel.position.x= 0.058;
-    kBModel.position.y=0.0;
-    kBModel.position.z=0.8;
-    kBModel.rotation.set(0,1.95,0)
-    scene.add( kBModel );
+    // kBModel.position.x= 0.058;
+    kBModel.position.y=-0.13;
+    kBModel.position.z=0.23;
+    kBModel.rotation.set(0.3,1.95,-0.3);
+    computerGroup.add( kBModel);
+  
 
 }, function ( xhr ) {
 
@@ -109,8 +112,6 @@ loader6.load( 'white_rabbit/scene.glb', function ( gltf4 ) {
     rabbitModel = gltf4.scene;
     rabbitModel.castShadow = true;
     rabbitModel.scale.set(1, 1, 1);
-    rabbitModel.position.x= 0.65;
-    // kBModel.position.z=0.8;
     rabbitModel.rotation.set(0,15,0)
     rabbitGroup.add( rabbitModel );
 
@@ -131,9 +132,7 @@ loader7.load( 'freefall/scene.glb', function ( gltf4 ) {
     manModel.recieveShadow = true;
     manModel.scale.set(0.04, 0.04, 0.04);
     manModel.position.y= 0.25;
-    // kBModel.position.z=0.8;
     manModel.rotation.set(0,10,0);
-    //manModel.add(rabbitModel);
     scene.add( manModel );
     
 
@@ -379,7 +378,10 @@ camera.aspect = window.innerWidth / window.innerHeight; // Update aspect ratio
 camera.updateProjectionMatrix(); // Apply changes
 });
 
+// ADDING Handle Groups for orbits
 scene.add(rabbitGroup);
+scene.add( computerGroup );
+
 function animate(rabbitModel) {
     requestAnimationFrame( animate );
 
@@ -389,6 +391,9 @@ function animate(rabbitModel) {
     if(rabbitGroup) rabbitGroup.position.x = Math.cos( time ) * 1.5;
     if (rabbitGroup) rabbitGroup.position.z = Math.sin( time ) * 0.6;
     if(rabbitGroup) rabbitGroup.rotateX(0.002);
+    if(computerGroup) computerGroup.position.x = -Math.cos( time ) * 1.5;
+    if (computerGroup) computerGroup.position.z = -Math.sin( time ) * 0.6;
+    if(computerGroup) computerGroup.rotateY(0.002);
 
     // console.log(rabbitGroup.position)
     camera.updateProjectionMatrix();
