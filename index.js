@@ -7,6 +7,7 @@ let manModel, rabbitModel;
 
 const rabbitGroup = new THREE.Group();
 const computerGroup = new THREE.Group();
+const manGroup = new THREE.Group();
 
 const sizes = {
     width: window.innerWidth,
@@ -133,7 +134,8 @@ loader7.load( 'freefall/scene.glb', function ( gltf4 ) {
     manModel.scale.set(0.04, 0.04, 0.04);
     manModel.position.y= 0.25;
     manModel.rotation.set(0,10,0);
-    scene.add( manModel );
+    manGroup.add(manModel);
+    
     
 
 }, function ( xhr ) {
@@ -381,6 +383,7 @@ camera.updateProjectionMatrix(); // Apply changes
 // ADDING Handle Groups for orbits
 scene.add(rabbitGroup);
 scene.add( computerGroup );
+scene.add( manGroup );
 
 function animate(rabbitModel) {
     requestAnimationFrame( animate );
@@ -388,12 +391,15 @@ function animate(rabbitModel) {
     // Update trackball controls
     controls.update();
     const time = performance.now() / 8000;
-    if(rabbitGroup) rabbitGroup.position.x = Math.cos( time ) * 1.5;
+    const manTime= performance.now() / 800;
+    if(rabbitGroup) rabbitGroup.position.x = Math.cos( time ) * 1.25;
     if (rabbitGroup) rabbitGroup.position.z = Math.sin( time ) * 0.6;
     if(rabbitGroup) rabbitGroup.rotateX(0.002);
-    if(computerGroup) computerGroup.position.x = -Math.cos( time ) * 1.5;
+    if(computerGroup) computerGroup.position.x = -Math.cos( time ) * 1.25;
     if (computerGroup) computerGroup.position.z = -Math.sin( time ) * 0.6;
     if(computerGroup) computerGroup.rotateY(0.002);
+    if(computerGroup) computerGroup.rotateZ(-0.002);
+    if(manGroup) manGroup.position.y = Math.cos( manTime ) * 0.05;
 
     // console.log(rabbitGroup.position)
     camera.updateProjectionMatrix();
