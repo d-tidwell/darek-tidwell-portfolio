@@ -5,6 +5,8 @@ import { GLTFLoader } from "https://cdn.skypack.dev/three@0.128.0/examples/jsm/l
 let camera, scene, renderer, raycaster, mouse, canvasBounds;
 let manModel, rabbitModel;
 
+const rabbitGroup = new THREE.Group();
+
 const sizes = {
     width: window.innerWidth,
     height: window.innerHeight
@@ -39,25 +41,7 @@ loader.load( 'sony_trinitron_prl/scene.gltf', function ( gltf ) {
     console.error( error );
 
 } );
-// const loader2 = new GLTFLoader(loadingManager);
-// loader2.load( 'brick_phone/scene.gltf', function ( gltf2 ) {
-//     let phoneModel = gltf2.scene;
-//     phoneModel.castShadow = true;
-//     phoneModel.scale.set(0.025, 0.025, 0.025);
-//     phoneModel.position.x= 0.65;
-//     phoneModel.position.y=0.14;
-//     phoneModel.rotation.set(0,-4.7,0)
-//     scene.add( phoneModel );
 
-// }, function ( xhr ) {
-
-//     console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded-phone' );
-
-// }, undefined, function ( error ) {
-
-//     console.error( error );
-
-// } );
 
 const loader3 = new GLTFLoader(loadingManager);
 loader3.load( 'book_stack.glb', function ( gltf ) {
@@ -122,13 +106,13 @@ loader5.load( 'bent_spoon/working.glb', function ( gltf4 ) {
 } );
 const loader6 = new GLTFLoader(loadingManager);
 loader6.load( 'white_rabbit/scene.glb', function ( gltf4 ) {
-    let rabbitModel = gltf4.scene;
+    rabbitModel = gltf4.scene;
     rabbitModel.castShadow = true;
     rabbitModel.scale.set(1, 1, 1);
     rabbitModel.position.x= 0.65;
     // kBModel.position.z=0.8;
     rabbitModel.rotation.set(0,15,0)
-    scene.add( rabbitModel );
+    rabbitGroup.add( rabbitModel );
 
 
 }, function ( xhr ) {
@@ -173,18 +157,7 @@ scene = new THREE.Scene();
 scene.add(camera);
 
 // Geometry 
-const box1 = new THREE.BoxGeometry( 0.2, 0.2, 0.2 );
-box1.translate(-.4,0,0)
-box1.castShadow = true;
-const box2 = new THREE.BoxGeometry( 0.2, 0.2, 0.2 );
-box2.translate(-.4,0,0)
-box2.castShadow = true;
-const box3 = new THREE.BoxGeometry( 0.2, 0.2, 0.2 );
-box3.translate(0,0,.4)
-box3.castShadow = true;
-const box4 = new THREE.BoxGeometry( 0.2, 0.2, 0.2 );
-box4.translate(0,0,-.4)
-box4.castShadow = true;
+
 
 
 
@@ -237,7 +210,7 @@ scene.add(sphereMat);
 // scene.add( mesh2 );
 //const mesh3 = new THREE.Mesh( box3, material );
 //scene.add( mesh3 );
-const mesh4 = new THREE.Mesh( box4, material );
+// const mesh4 = new THREE.Mesh( box4, material );
 // needed for event handler
 // mesh4.name = 'tester';
 // scene.add( mesh4 );
@@ -299,7 +272,7 @@ controls.target.set(0, 0.25, 0);
 
 raycaster = new THREE.Raycaster();
 // raycaster.near =0;
-raycaster.far = 2.6;
+//raycaster.far = 2.6;
 
 mouse = new THREE.Vector2();
 function onMouseMove( event ) {
@@ -352,7 +325,7 @@ function onClick(event) {
             
         }
         //if(intersect[0].object.name == "PHONEBUTTON" || intersect[0].object.name == "PHONE_MAIN_LOW")
-        if(intersect[0].object.name == "rabbit"){
+        if(intersect[0].object.name.includes("rabbit")){
             //There is a mobile issue here needs to be resolved
             const textureLoader2 = new THREE.TextureLoader().load('info-tv-projects-trans.png')
             const textureLoader = new THREE.TextureLoader().load('info-tv-contacts.png'); 
@@ -406,21 +379,25 @@ camera.aspect = window.innerWidth / window.innerHeight; // Update aspect ratio
 camera.updateProjectionMatrix(); // Apply changes
 });
 
-
-animate();
-function animate() {
+scene.add(rabbitGroup);
+function animate(rabbitModel) {
     requestAnimationFrame( animate );
 
     // Update trackball controls
     controls.update();
-    // const time = performance.now() / 3000;
-    // rabbitModel.position.x = Math.cos( time ) * 25;
-    // rabbitModel.position.z = Math.sin( time ) * 25;
-    // console.log(spotLight2.position)
+    const time = performance.now() / 8000;
+    if(rabbitGroup) rabbitGroup.position.x = Math.cos( time ) * 1.5;
+    if (rabbitGroup) rabbitGroup.position.z = Math.sin( time ) * 0.6;
+    if(rabbitGroup) rabbitGroup.rotateX(0.002);
+
+    // console.log(rabbitGroup.position)
     camera.updateProjectionMatrix();
     sphereEnv.rotateY(0.0006);
     renderer.render( scene, camera );
     
 
 }
+
+animate(rabbitModel);
+
 
