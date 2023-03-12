@@ -8,6 +8,8 @@ let manModel, rabbitModel;
 const rabbitGroup = new THREE.Group();
 const computerGroup = new THREE.Group();
 const manGroup = new THREE.Group();
+const bookGroup = new THREE.Group();
+const spoonGroup = new THREE.Group();
 
 const sizes = {
     width: window.innerWidth,
@@ -29,8 +31,6 @@ loader.load( 'sony_trinitron_prl/scene.gltf', function ( gltf ) {
     let tvModel = gltf.scene;
     tvModel.castShadow = true;
     tvModel.scale.set(0.001, 0.001, 0.001);
-    // tvModel.position.z= 0.75;
-    // tvModel.position.y=0.14;
     tvModel.rotation.set(0,3.55,0.5);
     computerGroup.add(tvModel);
    
@@ -50,12 +50,12 @@ const loader3 = new GLTFLoader(loadingManager);
 loader3.load( 'book_stack.glb', function ( gltf ) {
     let bookModel = gltf.scene;
     bookModel.castShadow = true;
-    bookModel.scale.set(.2, .2, .2);
-    bookModel.position.z= -0.5;
-    bookModel.position.y= 0;
-    bookModel.position.x= -0.2;
+    bookModel.scale.set(0.2, 0.2, 0.2);
+    // bookModel.position.z= -0.5;
+    // bookModel.position.y= 0;
+    bookModel.position.x= -0.05;
     bookModel.rotation.set(0,5.1,0)
-    scene.add( bookModel );
+    bookGroup.add( bookModel );
 
 }, function ( xhr ) {
 
@@ -93,11 +93,12 @@ loader5.load( 'bent_spoon/working.glb', function ( gltf4 ) {
     let spoonModel = gltf4.scene;
     spoonModel.castShadow = true;
     spoonModel.scale.set(.3, .3, .3);
-    spoonModel.position.x= -0.8;
+    // spoonModel.position.x= -0.8;
     //spoonModel.rotateY=-3;
     // kBModel.position.z=0.8;
     spoonModel.rotation.set(0,5,0)
-    scene.add( spoonModel );
+    spoonGroup.add(spoonModel);
+   
 
 }, function ( xhr ) {
 
@@ -384,6 +385,8 @@ camera.updateProjectionMatrix(); // Apply changes
 scene.add(rabbitGroup);
 scene.add( computerGroup );
 scene.add( manGroup );
+scene.add( bookGroup );
+scene.add( spoonGroup );
 
 function animate(rabbitModel) {
     requestAnimationFrame( animate );
@@ -392,14 +395,29 @@ function animate(rabbitModel) {
     controls.update();
     const time = performance.now() / 8000;
     const manTime= performance.now() / 800;
+
     if(rabbitGroup) rabbitGroup.position.x = Math.cos( time ) * 1.25;
     if (rabbitGroup) rabbitGroup.position.z = Math.sin( time ) * 0.6;
     if(rabbitGroup) rabbitGroup.rotateX(0.002);
+
     if(computerGroup) computerGroup.position.x = -Math.cos( time ) * 1.25;
     if (computerGroup) computerGroup.position.z = -Math.sin( time ) * 0.6;
     if(computerGroup) computerGroup.rotateY(0.002);
     if(computerGroup) computerGroup.rotateZ(-0.002);
+
+    if(bookGroup) bookGroup.position.y = Math.cos( time ) * 0.89;
+    if(bookGroup) bookGroup.position.x = Math.cos( time ) * -1.15;
+    if(bookGroup) bookGroup.position.z = Math.sin( time ) * 1.0;
+    if(bookGroup) bookGroup.rotateY(0.002);
+
+    if(spoonGroup) spoonGroup.position.y = Math.cos( time ) * -0.89;
+    if(spoonGroup) spoonGroup.position.x = Math.cos( time ) * 1.15;
+    if(spoonGroup) spoonGroup.position.z = Math.sin( time ) * -1.0;
+    if(spoonGroup) spoonGroup.rotateY(0.002);
+    if(spoonGroup) spoonGroup.rotateZ(-0.002);
+
     if(manGroup) manGroup.position.y = Math.cos( manTime ) * 0.05;
+    
 
     // console.log(rabbitGroup.position)
     camera.updateProjectionMatrix();
