@@ -370,7 +370,28 @@ function onClick(event) {
             camera.add(infoMesh);
             infoPane.translate(0,0.025,-0.65);
     
-            } 
+            }
+        if(intersect[0].object.name.includes("Spoon")){
+            let selectedObject = scene.getObjectByName("INFO-TV");
+            let selectedBackground = scene.getObjectByName("INFO-TRANS");
+            camera.remove(selectedBackground);
+            camera.remove(selectedObject);
+                //There is a mobile issue here needs to be resolved
+            const textureLoader2 = new THREE.TextureLoader().load('info-tv-projects-trans.png')
+            const textureLoader = new THREE.TextureLoader().load('info-tv-skills.png');
+            let infoPane = new THREE.PlaneGeometry(0.6,0.90);
+            const infoMaterial = new THREE.MeshBasicMaterial({map: textureLoader2, side: THREE.DoubleSide, transparent: true, opacity: 0.72});
+            const Phongmaterial = new THREE.MeshBasicMaterial({ map: textureLoader, side: THREE.DoubleSide, transparent: true, opacity:1 });
+            const infoMeshBackground = new THREE.Mesh(infoPane, infoMaterial)
+            const infoMesh = new THREE.Mesh(infoPane, Phongmaterial);
+            //object catchable name
+            infoMesh.name = "INFO-TV";
+            infoMeshBackground.name ="INFO-TRANS";
+            camera.add(infoMeshBackground);
+            camera.add(infoMesh);
+            infoPane.translate(0,0.025,-0.65);
+
+        }
 
   }
 }
