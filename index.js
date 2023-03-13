@@ -3,7 +3,6 @@ import { OrbitControls } from 'https://cdn.skypack.dev/three@0.128.0/examples/js
 import { GLTFLoader } from "https://cdn.skypack.dev/three@0.128.0/examples/jsm/loaders/GLTFLoader.js";
 
 let camera, scene, renderer, raycaster, mouse, canvasBounds;
-let manModel, rabbitModel;
 
 const rabbitGroup = new THREE.Group();
 const computerGroup = new THREE.Group();
@@ -96,7 +95,7 @@ loader5.load( 'bent_spoon/working.glb', function ( gltf4 ) {
 
 }, function ( xhr ) {
 
-    console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded-phone' );
+    console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded-spoon' );
 
 }, undefined, function ( error ) {
 
@@ -105,7 +104,7 @@ loader5.load( 'bent_spoon/working.glb', function ( gltf4 ) {
 } );
 const loader6 = new GLTFLoader(loadingManager);
 loader6.load( 'white_rabbit/scene.glb', function ( gltf4 ) {
-    rabbitModel = gltf4.scene;
+    let rabbitModel = gltf4.scene;
     rabbitModel.castShadow = true;
     rabbitModel.scale.set(1, 1, 1);
     rabbitModel.rotation.set(0,15,0)
@@ -114,7 +113,7 @@ loader6.load( 'white_rabbit/scene.glb', function ( gltf4 ) {
 
 }, function ( xhr ) {
 
-    console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded-phone' );
+    console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded-rabbit' );
 
 }, undefined, function ( error ) {
 
@@ -135,7 +134,7 @@ loader7.load( 'freefall/scene.glb', function ( gltf4 ) {
 
 }, function ( xhr ) {
 
-    console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded-phone' );
+    console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded-falling-man' );
 
 }, undefined, function ( error ) {
 
@@ -149,25 +148,12 @@ camera = new THREE.PerspectiveCamera( 70, sizes.width / sizes.height, 0.01, 10 )
 camera.position.z = 2;
 
 scene = new THREE.Scene();
- scene.fog = new THREE.Fog(  0x22903d, 0.00025, .00009 );
+//scene.fog = new THREE.Fog(  0x22903d, 0.00025, .00009 );
 scene.add(camera);
 
 // Geometry 
 
-
-
-
 // Materials
-
-const material = new THREE.MeshPhysicalMaterial({
-    color : 0x049ef4,
-    roughness : 0.89,
-    metalness : 0.02,
-    reflectivity : 0.085,
-    clearcoat : 0.098,
-    clearcoatRoughness : 0.01
-
-});
 
 // Floor
 //video texture - see html video in index.html none display property
@@ -260,11 +246,11 @@ function onMouseMove( event ) {
 }
 function onTouchMove( event ) {
     // calculates mouse position in normalized device coordinate -1 to  +1 for both given the canvas size
-    // canvasBounds = renderer.getContext().canvas.getBoundingClientRect();
-    // mouse.x = ( ( event.clientX - canvasBounds.left ) / ( canvasBounds.right - canvasBounds.left ) ) * 2 - 1;
-    // mouse.y = - ( ( event.clientY - canvasBounds.top ) / ( canvasBounds.bottom - canvasBounds.top) ) * 2 + 1;
-    // camera.updateProjectionMatrix();
-    // controls.update();
+    canvasBounds = renderer.getContext().canvas.getBoundingClientRect();
+    mouse.x = ( ( event.changedTouches[0].clientX - canvasBounds.left ) / ( canvasBounds.right - canvasBounds.left ) ) * 2 - 1;
+    mouse.y = - ( ( event.changedTouches[0].clientY - canvasBounds.top ) / ( canvasBounds.bottom - canvasBounds.top) ) * 2 + 1;
+    camera.updateProjectionMatrix();
+    controls.update();
     
   }
 function onClick(event) {
@@ -276,7 +262,7 @@ function onClick(event) {
     console.log(intersect)
     console.log(mouse.x, mouse.y);
     //mobile
-    //console.log(event.changedTouches[0])
+    //console.log("HERE",( ( event.changedTouches[0].clientX - canvasBounds.left ) / ( canvasBounds.right - canvasBounds.left ) ) * 2 - 1);
   
     if (intersect.length > 0 ) {
         console.log(intersect[0].object.name);
@@ -286,14 +272,12 @@ function onClick(event) {
             console.log("removed");
             let selectedObject = scene.getObjectByName("INFO-TV");
             let selectedBackground = scene.getObjectByName("INFO-TRANS");
-            scene.remove(selectedBackground);
-            scene.remove(selectedObject);
             camera.remove(selectedBackground);
             camera.remove(selectedObject);
             return;
             
         }
-        if(intersect[0].object.name == "TV_body_low002" || intersect[0].object.name == "TV_body_low001" || intersect[0].object.name[1] =='b') {
+        if(intersect[0].object.name.includes("TV_") || intersect[0].object.name[1] =='b') {
             let selectedObject = scene.getObjectByName("INFO-TV");
             let selectedBackground = scene.getObjectByName("INFO-TRANS");
             camera.remove(selectedBackground);
@@ -316,13 +300,10 @@ function onClick(event) {
             infoPane.translate(0,0,-0.65);
             
         }
-        //if(intersect[0].object.name == "PHONEBUTTON" || intersect[0].object.name == "PHONE_MAIN_LOW")
         if(intersect[0].object.name.includes("rabbit")){
             console.log(camera.position.z);
             let selectedObject = scene.getObjectByName("INFO-TV");
             let selectedBackground = scene.getObjectByName("INFO-TRANS");
-            scene.remove(selectedBackground);
-            scene.remove(selectedObject);
             camera.remove(selectedBackground);
             camera.remove(selectedObject);
             //There is a mobile issue here needs to be resolved
@@ -345,9 +326,7 @@ function onClick(event) {
              //infoMeshBackground.translate(0,0,-0.65);
             
         }
-        if(intersect[0].object.name == "book_stack_1" || intersect[0].object.name == "book_stack_3" ||
-            intersect[0].object.name == "book_stack_2" || intersect[0].object.name == "book_stack_4" || 
-            intersect[0].object.name == "book_stack_6") {
+        if(intersect[0].object.name.includes("book")) {
             let selectedObject = scene.getObjectByName("INFO-TV");
             let selectedBackground = scene.getObjectByName("INFO-TRANS");
             camera.remove(selectedBackground);
@@ -396,9 +375,9 @@ function onClick(event) {
   }
 }
 window.addEventListener('mousemove', onMouseMove, false);
-//window.addEventListener('touchmove', onTouchMove, false);
+window.addEventListener('touchmove', onTouchMove, false);
 window.addEventListener('click', onClick);
-window.addEventListener("touchend", onClick, false);
+window.addEventListener("touchstart", onClick, false);
 
 
 // window resize
@@ -415,7 +394,7 @@ scene.add( manGroup );
 scene.add( bookGroup );
 scene.add( spoonGroup );
 
-function animate(rabbitModel) {
+function animate() {
     requestAnimationFrame( animate );
 
     // Update trackball controls
@@ -455,6 +434,6 @@ function animate(rabbitModel) {
 
 }
 
-animate(rabbitModel);
+animate();
 
 
