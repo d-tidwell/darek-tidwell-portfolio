@@ -259,10 +259,9 @@ function onClick(event) {
 
     let intersect;
     intersect = raycaster.intersectObjects(scene.children, true);
-    console.log(intersect)
-    console.log(mouse.x, mouse.y);
-    //mobile
-    //console.log("HERE",( ( event.changedTouches[0].clientX - canvasBounds.left ) / ( canvasBounds.right - canvasBounds.left ) ) * 2 - 1);
+    //console.log(intersect)
+    //console.log(mouse.x, mouse.y);
+
   
     if (intersect.length > 0 ) {
         console.log(intersect[0].object.name);
@@ -286,8 +285,7 @@ function onClick(event) {
             const textureLoader2 = new THREE.TextureLoader().load('info-tv-projects-trans.png')
             const textureLoader = new THREE.TextureLoader().load('info-tv-projects.png');
             let infoPane = new THREE.PlaneGeometry(0.5,0.8);
-            //infoPane.rotateY(- Math.PI / 2);
-            //infoPane.translate(0,0.3,0.95);
+
             const infoMaterial = new THREE.MeshBasicMaterial({map: textureLoader2, side: THREE.DoubleSide, transparent: true, opacity: 0.72});
             const Phongmaterial = new THREE.MeshBasicMaterial({ map: textureLoader, side: THREE.DoubleSide, transparent: true, opacity:1 });
             const infoMeshBackground = new THREE.Mesh(infoPane, infoMaterial)
@@ -310,8 +308,7 @@ function onClick(event) {
             const textureLoader2 = new THREE.TextureLoader().load('info-tv-projects-trans.png')
             const textureLoader = new THREE.TextureLoader().load('info-tv-contacts.png'); 
             let infoPane = new THREE.PlaneGeometry(0.3,0.5);
-            //infoPane.rotateY( Math.PI / 2);
-            //infoPane.translate(0.86,0.31,0);
+
             const infoMaterial = new THREE.MeshBasicMaterial({map: textureLoader2, side: THREE.DoubleSide, transparent: true, opacity: 0.72});
             const Phongmaterial = new THREE.MeshBasicMaterial({ map: textureLoader, side: THREE.DoubleSide, transparent: true, opacity:1 });
             const infoMeshBackground = new THREE.Mesh(infoPane, infoMaterial)
@@ -335,9 +332,7 @@ function onClick(event) {
             const textureLoader2 = new THREE.TextureLoader().load('info-tv-projects-trans.png')
             const textureLoader = new THREE.TextureLoader().load('info-tv-resume.png');
             let infoPane = new THREE.PlaneGeometry(0.6,0.90);
-            // infoPane.rotateY( Math.PI / 2);
-            // infoPane.rotateY(2);
-            // infoPane.translate(-0.4,0.55,-.8);
+
             const infoMaterial = new THREE.MeshBasicMaterial({map: textureLoader2, side: THREE.DoubleSide, transparent: true, opacity: 0.72});
             const Phongmaterial = new THREE.MeshBasicMaterial({ map: textureLoader, side: THREE.DoubleSide, transparent: true, opacity:1 });
             const infoMeshBackground = new THREE.Mesh(infoPane, infoMaterial)
