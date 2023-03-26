@@ -30,7 +30,7 @@ if (!isMobile()) {
     }
     // GLTF MODELS
     const loader = new GLTFLoader(loadingManager);
-    loader.load( 'sony_trinitron_prl/scene.gltf', function ( gltf ) {
+    loader.load( 'models/sony_trinitron_prl/scene.gltf', function ( gltf ) {
         let tvModel = gltf.scene;
         tvModel.castShadow = true;
         tvModel.scale.set(0.001, 0.001, 0.001);
@@ -50,7 +50,7 @@ if (!isMobile()) {
 
 
     const loader3 = new GLTFLoader(loadingManager);
-    loader3.load( 'book_stack.glb', function ( gltf ) {
+    loader3.load( 'models/book_stack.glb', function ( gltf ) {
         let bookModel = gltf.scene;
         bookModel.castShadow = true;
         bookModel.scale.set(0.2, 0.2, 0.2);
@@ -68,7 +68,7 @@ if (!isMobile()) {
 
     } );
     const loader4 = new GLTFLoader(loadingManager);
-    loader4.load( 'ibm_model_m_keyboard/working.glb', function ( gltf4 ) {
+    loader4.load( 'models/ibm_model_m_keyboard/working.glb', function ( gltf4 ) {
         let kBModel = gltf4.scene;
         kBModel.castShadow = true;
         kBModel.scale.set(1, 1, 1);
@@ -89,7 +89,7 @@ if (!isMobile()) {
     } );
 
     const loader5 = new GLTFLoader(loadingManager);
-    loader5.load( 'bent_spoon/working.glb', function ( gltf4 ) {
+    loader5.load( 'models/bent_spoon/working.glb', function ( gltf4 ) {
         let spoonModel = gltf4.scene;
         spoonModel.castShadow = true;
         spoonModel.scale.set(.3, .3, .3);
@@ -107,7 +107,7 @@ if (!isMobile()) {
 
     } );
     const loader6 = new GLTFLoader(loadingManager);
-    loader6.load( 'white_rabbit/scene.glb', function ( gltf4 ) {
+    loader6.load( 'models/white_rabbit/scene.glb', function ( gltf4 ) {
         let rabbitModel = gltf4.scene;
         rabbitModel.castShadow = true;
         rabbitModel.scale.set(1, 1, 1);
@@ -125,7 +125,7 @@ if (!isMobile()) {
 
     } );
     const loader7 = new GLTFLoader(loadingManager);
-    loader7.load( 'freefall/scene.glb', function ( gltf4 ) {
+    loader7.load( 'models/freefall/scene.glb', function ( gltf4 ) {
         let manModel = gltf4.scene;
         manModel.castShadow = true;
         manModel.recieveShadow = true;
@@ -282,8 +282,8 @@ if (!isMobile()) {
                 camera.remove(selectedBackground);
                 camera.remove(selectedObject);
                 //There is a mobile size issue here needs to be resolved
-                const textureLoader2 = new THREE.TextureLoader().load('info-tv-projects-trans.png')
-                const textureLoader = new THREE.TextureLoader().load('info-tv-projects.png');
+                const textureLoader2 = new THREE.TextureLoader().load('img_3d/info-tv-projects-trans.png')
+                const textureLoader = new THREE.TextureLoader().load('img_3d/info-tv-projects.png');
                 let infoPane = new THREE.PlaneGeometry(0.5,0.8);
 
                 const infoMaterial = new THREE.MeshBasicMaterial({map: textureLoader2, side: THREE.DoubleSide, transparent: true, opacity: 0.72});
@@ -305,8 +305,8 @@ if (!isMobile()) {
                 camera.remove(selectedBackground);
                 camera.remove(selectedObject);
                 //There is a mobile issue here needs to be resolved
-                const textureLoader2 = new THREE.TextureLoader().load('info-tv-projects-trans.png')
-                const textureLoader = new THREE.TextureLoader().load('info-tv-contacts.png'); 
+                const textureLoader2 = new THREE.TextureLoader().load('img_3d/info-tv-projects-trans.png')
+                const textureLoader = new THREE.TextureLoader().load('img_3d/info-tv-contacts.png'); 
                 let infoPane = new THREE.PlaneGeometry(0.3,0.5);
 
                 const infoMaterial = new THREE.MeshBasicMaterial({map: textureLoader2, side: THREE.DoubleSide, transparent: true, opacity: 0.72});
@@ -329,8 +329,8 @@ if (!isMobile()) {
                 camera.remove(selectedBackground);
                 camera.remove(selectedObject);
                     //There is a mobile issue here needs to be resolved
-                const textureLoader2 = new THREE.TextureLoader().load('info-tv-projects-trans.png')
-                const textureLoader = new THREE.TextureLoader().load('info-tv-resume.png');
+                const textureLoader2 = new THREE.TextureLoader().load('img_3d/info-tv-projects-trans.png')
+                const textureLoader = new THREE.TextureLoader().load('img_3d/info-tv-resume.png');
                 let infoPane = new THREE.PlaneGeometry(0.6,0.90);
 
                 const infoMaterial = new THREE.MeshBasicMaterial({map: textureLoader2, side: THREE.DoubleSide, transparent: true, opacity: 0.72});
@@ -351,8 +351,8 @@ if (!isMobile()) {
                 camera.remove(selectedBackground);
                 camera.remove(selectedObject);
                     //There is a mobile issue here needs to be resolved
-                const textureLoader2 = new THREE.TextureLoader().load('info-tv-projects-trans.png')
-                const textureLoader = new THREE.TextureLoader().load('info-tv-skills.png');
+                const textureLoader2 = new THREE.TextureLoader().load('img_3d/info-tv-projects-trans.png')
+                const textureLoader = new THREE.TextureLoader().load('img_3d/info-tv-skills.png');
                 let infoPane = new THREE.PlaneGeometry(0.6,0.90);
                 const infoMaterial = new THREE.MeshBasicMaterial({map: textureLoader2, side: THREE.DoubleSide, transparent: true, opacity: 0.72});
                 const Phongmaterial = new THREE.MeshBasicMaterial({ map: textureLoader, side: THREE.DoubleSide, transparent: true, opacity:1 });
