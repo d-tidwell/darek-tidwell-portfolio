@@ -158,8 +158,8 @@ if (!isMobile()) {
     // Materials
 
     // Floor
-    //video texture - see html video in index.html none display property
-    //Get your video element
+    // video texture - see html video in index.html none display property
+    // Get your video element
     const video = document.getElementById("video");
     video.onloadeddata = function () {
         video.play();
@@ -173,9 +173,9 @@ if (!isMobile()) {
         toneMapped: false,
         
     });
-    ;
+    
 
-    // DOME
+    //  DOME
     const sphereEnv = new THREE.SphereGeometry(3,64,32);
     sphereEnv.rotateX(Math.PI/2 +1.5);
     sphereEnv.rotateY(Math.PI/2 + 1.5);
