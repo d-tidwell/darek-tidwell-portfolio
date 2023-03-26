@@ -264,7 +264,7 @@ if (!isMobile()) {
 
     
         if (intersect.length > 0 ) {
-            console.log(intersect[0].object.name);
+            //console.log(intersect[0].object.name);
             
             // to remove the object - need to make this a function
             if(intersect[0].object.name == "INFO-TV" || intersect[0].object.name == "INFO-TRANS") {
@@ -377,9 +377,27 @@ if (!isMobile()) {
 
     // window resize
     window.addEventListener('resize', () => {
-    renderer.setSize(window.innerWidth, window.innerHeight); // Update size
-    camera.aspect = window.innerWidth / window.innerHeight; // Update aspect ratio
-    camera.updateProjectionMatrix(); // Apply changes
+        if(window.innerWidth < 720){
+            var myDIV = document.getElementById("myDiv");
+            fetch('2d_html.html')
+                .then(response => response.text())
+                .then(data => {
+                myDIV.innerHTML = data;
+            })
+        }
+        if(window.innerWidth >= 720){
+            location.reload();
+            var myDIV = document.getElementById("myDiv");
+            fetch('3d_html.html')
+                .then(response => response.text())
+                .then(data => {
+                myDIV.innerHTML = data;
+            })
+        }
+
+        renderer.setSize(window.innerWidth, window.innerHeight); // Update size
+        camera.aspect = window.innerWidth / window.innerHeight; // Update aspect ratio
+        camera.updateProjectionMatrix(); // Apply changes
     });
 
     // ADDING Handle Groups for orbits
