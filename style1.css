@@ -71,3 +71,8 @@ label {
     top: 0;
     left: 0;
 }
+#myDiv {
+  width: 500px;
+  height: 500px;
+  border: 1px solid black;
+}
