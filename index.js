@@ -40,7 +40,7 @@ if (!isMobile()) {
 
     }, function ( xhr ) {
 
-        console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded-tv' );
+        //console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded-tv' );
 
     },undefined, function ( error ) {
 
@@ -60,7 +60,7 @@ if (!isMobile()) {
 
     }, function ( xhr ) {
 
-        console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded-book' );
+        //console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded-book' );
 
     },undefined, function ( error ) {
 
@@ -80,7 +80,7 @@ if (!isMobile()) {
 
     }, function ( xhr ) {
 
-        console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded-keyboard' );
+        //console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded-keyboard' );
 
     }, undefined, function ( error ) {
 
@@ -99,7 +99,7 @@ if (!isMobile()) {
 
     }, function ( xhr ) {
 
-        console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded-spoon' );
+        //console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded-spoon' );
 
     }, undefined, function ( error ) {
 
@@ -117,7 +117,7 @@ if (!isMobile()) {
 
     }, function ( xhr ) {
 
-        console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded-rabbit' );
+       //console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded-rabbit' );
 
     }, undefined, function ( error ) {
 
@@ -136,7 +136,7 @@ if (!isMobile()) {
         
     }, function ( xhr ) {
 
-        console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded-falling-man' );
+        //console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded-falling-man' );
 
     }, undefined, function ( error ) {
 
