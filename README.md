@@ -1,2 +1,2 @@
 # Three.js Interactive Personal Portfolio Website
-![](https://github.com/d-tidwell/darek-tidwell-portfolio/blob/main/Screenshot 2023-04-27 163152.jpg?raw=true)
+!["front page view"](https://github.com/d-tidwell/darek-tidwell-portfolio/blob/main/img_2d/Screenshot%202023-04-27%20163152.png?raw=true)
