@@ -1,4 +1,5 @@
 # Three.js Interactive Personal Portfolio Website
+[The active page can be found here](https://d-tidwell.github.io/darek-tidwell-portfolio/)
 - Clickable GLTF Objects and custom geometry modals
 - Navagation Bar for links to socials and resume
 - Reaction-Diffusion precompositied in Python for Background World Sphere video texture
